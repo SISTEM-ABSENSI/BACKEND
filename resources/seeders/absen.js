@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/space-before-function-paren */
 'use strict'
 
 /** @type {import('sequelize-cli').Migration} */

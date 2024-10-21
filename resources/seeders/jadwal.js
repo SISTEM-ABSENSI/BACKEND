@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/space-before-function-paren */
 'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
@@ -6,20 +7,24 @@ module.exports = {
     await queryInterface.bulkInsert('jadwal', [
       {
         jadwal_id: 1,
-        toko_id: 1,
-        spg_id: 1,
-        date: new Date(),
-        check_in: new Date(),
-        check_out: new Date(),
+        jadwal_name: 'Jadwal Shift 1',
+        jadwal_description: 'Shift pagi untuk SPG 1 di Toko 1',
+        jadwal_toko_id: 1,
+        jadwal_spg_id: 1,
+        jadwal_start_date: new Date(),
+        jadwal_end_date: new Date(),
+        jadwal_status: 'waiting',
         created_at: new Date()
       },
       {
         jadwal_id: 2,
-        toko_id: 2,
-        spg_id: 2,
-        date: new Date(),
-        check_in: new Date(),
-        check_out: new Date(),
+        jadwal_name: 'Jadwal Shift 2',
+        jadwal_description: 'Shift siang untuk SPG 2 di Toko 2',
+        jadwal_toko_id: 2,
+        jadwal_spg_id: 2,
+        jadwal_start_date: new Date(),
+        jadwal_end_date: new Date(),
+        jadwal_status: 'waiting',
         created_at: new Date()
       }
     ])

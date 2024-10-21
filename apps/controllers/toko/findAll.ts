@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
@@ -10,14 +10,14 @@ import { TokoModel } from '../../models/tokoModel'
 export const findAllToko = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllTokoSchema, req.query)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request query! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const { page: queryPage, size: querySize, search, pagination } = value
+    const { page: queryPage, size: querySize, pagination } = value
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 

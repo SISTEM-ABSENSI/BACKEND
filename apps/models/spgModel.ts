@@ -1,6 +1,7 @@
-import { DataTypes, Model, Optional } from 'sequelize'
+/* eslint-disable @typescript-eslint/indent */
+import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
-import { ZygoteAttributes, ZygoteModel } from './zygote'
+import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface spgAttributes extends ZygoteAttributes {
   spgId: number

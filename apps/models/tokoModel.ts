@@ -1,11 +1,13 @@
-import { DataTypes, Model, Optional } from 'sequelize'
+/* eslint-disable @typescript-eslint/indent */
+import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
-import { ZygoteAttributes, ZygoteModel } from './zygote'
+import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface TokoAttributes extends ZygoteAttributes {
   tokoId: number
   tokoName: string
-  tokoPosition: string
+  tokoLongitude: string
+  tokoLatitude: string
 }
 
 type TokoCreationAttributes = Optional<TokoAttributes, 'createdAt' | 'updatedAt'>
@@ -27,7 +29,11 @@ export const TokoModel = sequelize.define<TokoInstance>(
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    tokoPosition: {
+    tokoLongitude: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    tokoLatitude: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
@@ -37,7 +43,7 @@ export const TokoModel = sequelize.define<TokoInstance>(
     }
   },
   {
-    tableName: 'supplier',
+    tableName: 'toko',
     timestamps: false,
     underscored: true,
     freezeTableName: true

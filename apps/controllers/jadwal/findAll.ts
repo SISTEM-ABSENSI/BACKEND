@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
@@ -6,18 +6,19 @@ import logger from '../../utilities/logger'
 import { Pagination } from '../../utilities/pagination'
 import { findAllJadwalSchema } from '../../schemas/jadwalSchema'
 import { JadwalModel } from '../../models/jadwal'
+import { TokoModel } from '../../models/tokoModel'
 
 export const findAllJadwal = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllJadwalSchema, req.query)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request query! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const { page: queryPage, size: querySize, search, pagination } = value
+    const { page: queryPage, size: querySize, pagination } = value
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
@@ -27,6 +28,10 @@ export const findAllJadwal = async (req: any, res: Response): Promise<Response> 
         // ...(Boolean(req.query.search) && {
         //   [Op.or]: [{ : { [Op.like]: `%${search}%` } }]
         // })
+      },
+      include: {
+        model: TokoModel,
+        as: 'toko'
       },
       order: [['jadwalId', 'desc']],
       ...(pagination === 'true' && {
@@ -38,7 +43,7 @@ export const findAllJadwal = async (req: any, res: Response): Promise<Response> 
     const response = ResponseData.success(result)
     response.data = page.formatData(result)
 
-    logger.info('Absen retrieved successfully')
+    logger.info('Jadwal retrieved successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

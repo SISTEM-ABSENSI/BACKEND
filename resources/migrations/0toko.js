@@ -18,7 +18,11 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      toko_position: {
+      toko_longitude: {
+        type: Sequelize.STRING(100),
+        allowNull: false
+      },
+      toko_latitude: {
         type: Sequelize.STRING(100),
         allowNull: false
       },

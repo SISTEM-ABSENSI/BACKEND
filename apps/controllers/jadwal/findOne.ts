@@ -1,15 +1,16 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
 import { findOneJadwalSchema } from '../../schemas/jadwalSchema'
 import { JadwalModel } from '../../models/jadwal'
+import { TokoModel } from '../../models/tokoModel'
 
 export const findOneJadwal = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneJadwalSchema, req.params)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -20,11 +21,15 @@ export const findOneJadwal = async (req: any, res: Response): Promise<Response> 
       where: {
         deleted: 0,
         jadwalId: value.jadwalId
+      },
+      include: {
+        model: TokoModel,
+        as: 'toko'
       }
     })
 
-    if (!result) {
-      const message = `Jadwal not found with ID: ${value.absenId}`
+    if (result == null) {
+      const message = `Jadwal not found with ID: ${value.jadwalId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }

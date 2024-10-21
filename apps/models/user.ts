@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
-import { DataTypes, Model, Optional } from 'sequelize'
+import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from '.'
-import { ZygoteAttributes, ZygoteModel } from './zygote'
+import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface UserAttributes extends ZygoteAttributes {
   userId: string

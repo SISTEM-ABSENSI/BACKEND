@@ -8,31 +8,46 @@ const { ZygoteModel } = require('../zygote')
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('jadwal', {
-      ...ZygoteModel,
+      ...ZygoteModel, // Common attributes from ZygoteModel
       jadwal_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true
       },
-      toko_id: {
+      jadwal_name: {
+        type: Sequelize.STRING(100),
+        allowNull: false
+      },
+      jadwal_description: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      jadwal_toko_id: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: 'toko',
+          key: 'toko_id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
+      jadwal_spg_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      spg_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      date: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      check_in: {
+      jadwal_start_date: {
         type: Sequelize.DATE,
         allowNull: true
       },
-      check_out: {
+      jadwal_end_date: {
         type: Sequelize.DATE,
         allowNull: true
+      },
+      jadwal_status: {
+        type: Sequelize.ENUM('waiting', 'checkin', 'checkout'),
+        allowNull: true,
+        defaultValue: 'waiting'
       },
       created_at: {
         type: Sequelize.DATE,

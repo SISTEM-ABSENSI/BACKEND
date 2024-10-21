@@ -1,26 +1,30 @@
 import Joi from 'joi'
 
 export const createJadwalSchema = Joi.object({
-  tokoId: Joi.number().integer().positive().required(),
-  spgId: Joi.number().integer().positive().required(),
-  date: Joi.date().required(),
-  checkIn: Joi.date().optional(),
-  checkOut: Joi.date().optional(),
+  jadwalName: Joi.string().max(100).required(), // Validasi nama jadwal
+  jadwalDescription: Joi.string().required(), // Validasi deskripsi jadwal
+  jadwalTokoId: Joi.number().integer().positive().required(), // Foreign key ke Toko
+  jadwalSpgId: Joi.number().integer().positive().required(),
+  jadwalStartDate: Joi.date().optional(), // Tanggal mulai opsional
+  jadwalEndDate: Joi.date().optional(), // Tanggal selesai opsional
+  jadwalStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional(), // Status dengan pilihan tertentu
   createdAt: Joi.date().optional()
 })
 
 export const updateJadwalSchema = Joi.object({
-  jadwalId: Joi.number().integer().positive().required(),
-  tokoId: Joi.number().integer().positive().optional(),
-  spgId: Joi.number().integer().positive().optional(),
-  date: Joi.date().optional(),
-  checkIn: Joi.date().optional(),
-  checkOut: Joi.date().optional(),
+  jadwalId: Joi.number().integer().positive().required(), // ID wajib untuk update
+  jadwalName: Joi.string().max(100).optional(),
+  jadwalDescription: Joi.string().optional(),
+  jadwalTokoId: Joi.number().integer().positive().optional(),
+  jadwalSpgId: Joi.number().integer().positive().optional(),
+  jadwalStartDate: Joi.date().optional(),
+  jadwalEndDate: Joi.date().optional(),
+  jadwalStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional(),
   updatedAt: Joi.date().optional()
 })
 
 export const deleteJadwalSchema = Joi.object({
-  jadwalId: Joi.number().integer().positive().required()
+  jadwalId: Joi.number().integer().positive().required() // Wajib untuk menghapus
 })
 
 export const findOneJadwalSchema = Joi.object({

@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
@@ -9,7 +9,7 @@ import { JadwalModel } from '../../models/jadwal'
 export const removeJadwal = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(deleteJadwalSchema, req.params)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -23,8 +23,8 @@ export const removeJadwal = async (req: any, res: Response): Promise<Response> =
       }
     })
 
-    if (!result) {
-      const message = `Jadwal not found with ID: ${value.JadwalId}`
+    if (result == null) {
+      const message = `Jadwal not found with ID: ${value.jadwalId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
