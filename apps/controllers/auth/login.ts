@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
+import { type Request, type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
-import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
-import { UserAttributes, UserModel } from '../../models/user'
+import { type UserAttributes, UserModel } from '../../models/user'
 import { hashPassword } from '../../utilities/scure_password'
 import { generateAccessToken } from '../../utilities/jwt'
 import { userLoginSchema } from '../../schemas/user'
@@ -12,7 +11,7 @@ import logger from '../../utilities/logger'
 export const userLogin = async (req: Request, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(userLoginSchema, req.body)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -24,11 +23,11 @@ export const userLogin = async (req: Request, res: Response): Promise<Response> 
     const user = await UserModel.findOne({
       where: {
         deleted: 0,
-        userName: userName
+        userName
       }
     })
 
-    if (!user) {
+    if (user == null) {
       const message = 'Account not found. Please register first!'
       logger.info(`Login attempt failed: ${message}`)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))

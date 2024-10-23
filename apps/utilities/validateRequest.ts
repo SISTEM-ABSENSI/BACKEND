@@ -1,4 +1,4 @@
-import { ObjectSchema, ValidationResult } from 'joi'
+import type { ObjectSchema, ValidationResult } from 'joi'
 
 export const validateRequest = (
   schema: ObjectSchema,

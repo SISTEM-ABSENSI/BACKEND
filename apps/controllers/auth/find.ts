@@ -1,5 +1,5 @@
 // controller.ts
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
@@ -12,7 +12,7 @@ import logger from '../../utilities/logger'
 export const findAllUser = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllUsersSchema, req.query)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid query parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -52,7 +52,7 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
 export const findOneUser = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.params)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -69,7 +69,7 @@ export const findOneUser = async (req: any, res: Response): Promise<Response> =>
       attributes: ['userId', 'userName', 'createdAt', 'updatedAt']
     })
 
-    if (!user) {
+    if (user == null) {
       const message = 'User not found!'
       logger.info(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))

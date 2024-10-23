@@ -11,7 +11,7 @@ import logger from '../../utilities/logger'
 export const updateUser = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(updateUserSchema, req.body)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -27,16 +27,16 @@ export const updateUser = async (req: any, res: Response): Promise<Response> => 
       }
     })
 
-    if (!user) {
+    if (user == null) {
       const message = 'User not found!'
       logger.info(`Attempt to update non-existing user: ${userId}`)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
     const updatedData: Partial<UserAttributes> = {
-      ...(userName && { userName }),
-      ...(userPassword && { userPassword: hashPassword(userPassword) }),
-      ...(userRole && { userRole })
+      ...(userName.length > 0 && { userName }),
+      ...(userPassword.length > 0 && { userPassword: hashPassword(userPassword) }),
+      ...(userRole.length > 0 && { userRole })
     }
 
     await UserModel.update(updatedData, {

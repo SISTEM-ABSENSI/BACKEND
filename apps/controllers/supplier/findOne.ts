@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
@@ -9,7 +9,7 @@ import { SupplierModel } from '../../models/supplierModel'
 export const findOneSupplier = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneSupplierSchema, req.params)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -23,7 +23,7 @@ export const findOneSupplier = async (req: any, res: Response): Promise<Response
       }
     })
 
-    if (!result) {
+    if (result == null) {
       const message = `Supplier not found with ID: ${value.supplierId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))

@@ -1,4 +1,4 @@
-import { type Response, type Request } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
 import { validateRequest } from '../../utilities/validateRequest'
@@ -12,7 +12,7 @@ import logger from '../../utilities/logger'
 export const userRegister = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(userRegistrationSchema, req.body)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -29,7 +29,7 @@ export const userRegister = async (req: any, res: Response): Promise<Response> =
       }
     })
 
-    if (existingUser) {
+    if (existingUser != null) {
       const message = `Username ${existingUser.userName} is already registered. Please use another one.`
       logger.info(`Registration attempt failed: ${message}`)
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))

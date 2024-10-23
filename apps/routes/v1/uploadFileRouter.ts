@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 // src/routes/v1/uploadFileRouter.ts
 
-import { Router, Request, Response, NextFunction } from 'express'
+import { Router, type Request, type Response, type NextFunction } from 'express'
 import { uploadFile } from '../../controllers/upload-file'
 import { uploadMiddleware } from '../../middlewares/upload-file'
 import { StatusCodes } from 'http-status-codes'
@@ -15,7 +16,7 @@ const checkFileSizeMiddleware = (
   next: NextFunction
 ): void => {
   try {
-    if (req.file) {
+    if (req.file != null) {
       const fileSizeInKiloBytes = req.file.size / 1024
       if (fileSizeInKiloBytes > +APP_CONFIGS.maximumUploadFile) {
         throw new Error('Maximum file size is 2MB')

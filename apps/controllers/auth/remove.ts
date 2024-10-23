@@ -10,7 +10,7 @@ import logger from '../../utilities/logger'
 export const removeUser = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.query)
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request parameter! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -26,7 +26,7 @@ export const removeUser = async (req: any, res: Response): Promise<Response> => 
       }
     })
 
-    if (!user) {
+    if (user == null) {
       const message = 'User not found!'
       logger.info(`Attempt to remove non-existing user: ${userId}`)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))

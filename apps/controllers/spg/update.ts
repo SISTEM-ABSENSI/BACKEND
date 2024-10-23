@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
@@ -11,7 +11,7 @@ export const updateSpg = async (req: any, res: Response): Promise<Response> => {
     ...req.body
   })
 
-  if (error) {
+  if (error != null) {
     const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
@@ -22,7 +22,7 @@ export const updateSpg = async (req: any, res: Response): Promise<Response> => {
       where: { deleted: 0, spgId: value.spgId }
     })
 
-    if (!updated) {
+    if (updated === 0) {
       const message = `spgId not found with ID: ${value.spgId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
