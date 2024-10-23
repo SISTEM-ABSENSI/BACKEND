@@ -9,7 +9,9 @@ export const userRegistrationSchema = Joi.object({
   userName: Joi.string().required(),
   userEmail: Joi.string().required(),
   userRole: Joi.string().valid('admin', 'user').required(),
-  userPassword: Joi.string().min(6).required()
+  userPassword: Joi.string().min(6).required(),
+  userDeviceId: Joi.string().optional(),
+  userContact: Joi.string().optional()
 })
 
 export const findAllUsersSchema = Joi.object({
@@ -27,12 +29,14 @@ export const userSchema = Joi.object({
   userId: Joi.string().required(),
   userName: Joi.string().min(3).max(30).required(),
   userPassword: Joi.string().min(6).max(128).required(),
-  userRole: Joi.string().valid('admin', 'user').required()
+  userRole: Joi.string().valid('admin', 'spg', 'supplier').required(),
+  userDeviceId: Joi.string().optional(),
+  userContact: Joi.string().optional()
 })
 
 export const updateUserSchema = Joi.object({
   userId: Joi.string().required(),
-  userName: Joi.string().min(3).max(30).required(),
-  userPassword: Joi.string().min(6).max(128).required(),
-  userRole: Joi.string().valid('admin', 'user').required()
+  userName: Joi.string().min(3).max(30).optional(),
+  userPassword: Joi.string().min(6).max(128).optional(),
+  userRole: Joi.string().valid('admin', 'spg', 'supplier').optional()
 })

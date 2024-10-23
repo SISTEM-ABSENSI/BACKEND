@@ -3,11 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { deleteSpgSchema } from '../../schemas/spgSchema'
-import { SpgModel } from '../../models/spgModel'
+import { deleteTokoSchema } from '../../schemas/tokoSchema'
+import { TokoModel } from '../../models/tokoModel'
 
 export const removeToko = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(deleteSpgSchema, req.params)
+  const { error, value } = validateRequest(deleteTokoSchema, req.params)
 
   if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,10 +16,10 @@ export const removeToko = async (req: any, res: Response): Promise<Response> => 
   }
 
   try {
-    const result = await SpgModel.findOne({
+    const result = await TokoModel.findOne({
       where: {
         deleted: 0,
-        spgId: value.spgId
+        tokoId: value.tokoId
       }
     })
 

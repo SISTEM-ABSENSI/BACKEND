@@ -32,7 +32,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      jadwal_spg_id: {
+      jadwal_user_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },

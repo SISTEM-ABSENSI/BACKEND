@@ -7,15 +7,24 @@ module.exports = {
     await queryInterface.bulkInsert('users', [
       {
         user_id: 1,
-        user_name: 'user1',
-        user_email: 'user1@mail.com',
-        user_password: '91f284ea6cc6f77fb50743f8eb925e3d5e198a9a'
+        user_name: 'spg1',
+        user_email: 'spg@mail.com',
+        user_password: 'cf7c906bfbb48e72288fc016bac0e6ed58b0dc2a',
+        user_role: 'spg'
       },
       {
         user_id: 2,
-        user_name: 'user2',
-        user_email: 'user2@mail.com',
-        user_password: '91f284ea6cc6f77fb50743f8eb925e3d5e198a9a'
+        user_name: 'admin',
+        user_email: 'admin@mail.com',
+        user_password: 'cf7c906bfbb48e72288fc016bac0e6ed58b0dc2a',
+        user_role: 'admin'
+      },
+      {
+        user_id: 3,
+        user_name: 'supplier',
+        user_email: 'supplier@mail.com',
+        user_password: 'cf7c906bfbb48e72288fc016bac0e6ed58b0dc2a',
+        user_role: 'supplier'
       }
     ])
   },

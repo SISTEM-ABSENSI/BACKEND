@@ -9,7 +9,7 @@ export interface jadwalAttributes extends ZygoteAttributes {
   jadwalName: string
   jadwalDescription: string
   jadwalTokoId: number // Foreign key ke Toko
-  jadwalSpgId: number
+  jadwalUserId: number
   jadwalStartDate: string
   jadwalEndDate: string
   jadwalStatus: 'waiting' | 'checkin' | 'checkout'
@@ -46,7 +46,7 @@ export const JadwalModel = sequelize.define<jadwalInstance>(
         key: 'tokoId'
       }
     },
-    jadwalSpgId: {
+    jadwalUserId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
