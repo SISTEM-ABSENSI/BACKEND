@@ -3,11 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { createTokoSchema } from '../../schemas/tokoSchema'
-import { TokoModel } from '../../models/tokoModel'
+import { createStoreSchema } from '../../schemas/storeSchema'
+import { StoreModel } from '../../models/storeModel'
 
-export const createToko = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(createTokoSchema, req.body)
+export const createStore = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(createStoreSchema, req.body)
 
   if (error != null) {
     const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,9 +16,9 @@ export const createToko = async (req: any, res: Response): Promise<Response> => 
   }
 
   try {
-    const product = await TokoModel.create(value)
+    const product = await StoreModel.create(value)
     const response = ResponseData.success(product)
-    logger.info('Toko created successfully')
+    logger.info('Store created successfully')
     return res.status(StatusCodes.CREATED).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

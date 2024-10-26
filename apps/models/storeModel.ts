@@ -3,37 +3,37 @@ import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
-export interface TokoAttributes extends ZygoteAttributes {
-  tokoId: number
-  tokoName: string
-  tokoLongitude: string
-  tokoLatitude: string
+export interface StoreAttributes extends ZygoteAttributes {
+  storeId: number
+  storeName: string
+  storeLongitude: string
+  storeLatitude: string
 }
 
-type TokoCreationAttributes = Optional<TokoAttributes, 'createdAt' | 'updatedAt'>
+type StoreCreationAttributes = Optional<StoreAttributes, 'createdAt' | 'updatedAt'>
 
-export interface TokoInstance
-  extends Model<TokoAttributes, TokoCreationAttributes>,
-    TokoAttributes {}
+export interface StoreInstance
+  extends Model<StoreAttributes, StoreCreationAttributes>,
+    StoreAttributes {}
 
-export const TokoModel = sequelize.define<TokoInstance>(
-  'Toko',
+export const StoreModel = sequelize.define<StoreInstance>(
+  'Stores',
   {
     ...ZygoteModel,
-    tokoId: {
+    storeId: {
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true
     },
-    tokoName: {
+    storeName: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    tokoLongitude: {
+    storeLongitude: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    tokoLatitude: {
+    storeLatitude: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
@@ -43,7 +43,7 @@ export const TokoModel = sequelize.define<TokoInstance>(
     }
   },
   {
-    tableName: 'toko',
+    tableName: 'stores',
     timestamps: false,
     underscored: true,
     freezeTableName: true

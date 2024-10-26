@@ -1,10 +1,7 @@
 import Joi from 'joi'
 
 export const updateAttendanceSchema = Joi.object({
-  attendanceId: Joi.number().integer().positive().required(), // ID wajib untuk update
-  attendanceStatus: Joi.string().valid('waiting', 'checkin', 'checkout').required(),
-  attendanceLatitude: Joi.string().required(),
-  attendanceLongitude: Joi.string().required()
+  attendanceId: Joi.number().integer().positive().required()
 })
 
 export const findOneAttendanceSchema = Joi.object({

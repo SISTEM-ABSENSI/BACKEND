@@ -3,33 +3,37 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { updateJadwalSchema } from '../../schemas/jadwalSchema'
-import { JadwalModel } from '../../models/jadwal'
+import { deleteStoreSchema } from '../../schemas/storeSchema'
+import { StoreModel } from '../../models/storeModel'
 
-export const updateJadwal = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(updateJadwalSchema, {
-    ...req.body
-  })
+export const removeStore = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(deleteStoreSchema, req.params)
 
   if (error != null) {
-    const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
+    const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const [updated] = await JadwalModel.update(value, {
-      where: { deleted: 0, jadwalId: value.jadwalId }
+    const result = await StoreModel.findOne({
+      where: {
+        deleted: 0,
+        storeId: value.storeId
+      }
     })
 
-    if (updated === 0) {
-      const message = `Jadwal not found with ID: ${value.jadwalId}`
+    if (result == null) {
+      const message = `Store not found with ID: ${value.storeId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const response = ResponseData.success({ message: 'Jadwal updated successfully' })
-    logger.info('Jadwal updated successfully')
+    result.deleted = 1
+    await result.save()
+
+    const response = ResponseData.success({ message: 'Store deleted successfully' })
+    logger.info('Store deleted successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

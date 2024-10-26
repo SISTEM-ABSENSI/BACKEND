@@ -4,12 +4,12 @@ import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
 import { Pagination } from '../../utilities/pagination'
-import { findAllJadwalSchema } from '../../schemas/jadwalSchema'
-import { JadwalModel } from '../../models/jadwal'
-import { TokoModel } from '../../models/tokoModel'
+import { findAllScheduleSchema } from '../../schemas/scheduleSchema'
+import { ScheduleModel } from '../../models/scheduleModel'
+import { StoreModel } from '../../models/storeModel'
 
-export const findAllJadwal = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findAllJadwalSchema, req.query)
+export const findAllSchedule = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(findAllScheduleSchema, req.query)
 
   if (error != null) {
     const message = `Invalid request query! ${error.details.map((x) => x.message).join(', ')}`
@@ -22,18 +22,15 @@ export const findAllJadwal = async (req: any, res: Response): Promise<Response> 
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
-    const result = await JadwalModel.findAndCountAll({
+    const result = await ScheduleModel.findAndCountAll({
       where: {
         deleted: 0
-        // ...(Boolean(req.query.search) && {
-        //   [Op.or]: [{ : { [Op.like]: `%${search}%` } }]
-        // })
       },
       include: {
-        model: TokoModel,
-        as: 'toko'
+        model: StoreModel,
+        as: 'store'
       },
-      order: [['jadwalId', 'desc']],
+      order: [['scheduleId', 'desc']],
       ...(pagination === 'true' && {
         limit: page.limit,
         offset: page.offset
@@ -43,7 +40,7 @@ export const findAllJadwal = async (req: any, res: Response): Promise<Response> 
     const response = ResponseData.success(result)
     response.data = page.formatData(result)
 
-    logger.info('Jadwal retrieved successfully')
+    logger.info('Schedule retrieved successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

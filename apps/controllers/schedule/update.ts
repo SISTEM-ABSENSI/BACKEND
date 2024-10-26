@@ -3,39 +3,33 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { findOneJadwalSchema } from '../../schemas/jadwalSchema'
-import { JadwalModel } from '../../models/jadwal'
-import { TokoModel } from '../../models/tokoModel'
+import { updateScheduleSchema } from '../../schemas/scheduleSchema'
+import { ScheduleModel } from '../../models/scheduleModel'
 
-export const findOneJadwal = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findOneJadwalSchema, req.params)
+export const updateSchedule = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(updateScheduleSchema, {
+    ...req.body
+  })
 
   if (error != null) {
-    const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
+    const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
   try {
-    const result = await JadwalModel.findOne({
-      where: {
-        deleted: 0,
-        jadwalId: value.jadwalId
-      },
-      include: {
-        model: TokoModel,
-        as: 'toko'
-      }
+    const [updated] = await ScheduleModel.update(value, {
+      where: { deleted: 0, scheduleId: value.scheduleId }
     })
 
-    if (result == null) {
-      const message = `Jadwal not found with ID: ${value.jadwalId}`
+    if (updated === 0) {
+      const message = `Schedule not found with ID: ${value.scheduleId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const response = ResponseData.success(result)
-    logger.info('Jadwal found successfully')
+    const response = ResponseData.success({ message: 'Schedule updated successfully' })
+    logger.info('Schedule updated successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

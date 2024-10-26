@@ -3,11 +3,12 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { deleteJadwalSchema } from '../../schemas/jadwalSchema'
-import { JadwalModel } from '../../models/jadwal'
+import { ScheduleModel } from '../../models/scheduleModel'
+import { StoreModel } from '../../models/storeModel'
+import { findOneScheduleSchema } from '../../schemas/scheduleSchema'
 
-export const removeJadwal = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(deleteJadwalSchema, req.params)
+export const findOneSchedule = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(findOneScheduleSchema, req.params)
 
   if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,24 +17,25 @@ export const removeJadwal = async (req: any, res: Response): Promise<Response> =
   }
 
   try {
-    const result = await JadwalModel.findOne({
+    const result = await ScheduleModel.findOne({
       where: {
         deleted: 0,
-        jadwalId: value.jadwalId
+        scheduleId: value.scheduleId
+      },
+      include: {
+        model: StoreModel,
+        as: 'store'
       }
     })
 
     if (result == null) {
-      const message = `Jadwal not found with ID: ${value.jadwalId}`
+      const message = `Schedule not found with ID: ${value.scheduleId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    result.deleted = 1
-    void result.save()
-
-    const response = ResponseData.success({ message: 'Jadwal deleted successfully' })
-    logger.info('Jadwal deleted successfully')
+    const response = ResponseData.success(result)
+    logger.info('Schedule found successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

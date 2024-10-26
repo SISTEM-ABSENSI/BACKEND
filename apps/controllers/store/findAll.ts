@@ -4,11 +4,11 @@ import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
 import { Pagination } from '../../utilities/pagination'
-import { findAllTokoSchema } from '../../schemas/tokoSchema'
-import { TokoModel } from '../../models/tokoModel'
+import { findAllStoreSchema } from '../../schemas/storeSchema'
+import { StoreModel } from '../../models/storeModel'
 
-export const findAllToko = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findAllTokoSchema, req.query)
+export const findAllStore = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(findAllStoreSchema, req.query)
 
   if (error != null) {
     const message = `Invalid request query! ${error.details.map((x) => x.message).join(', ')}`
@@ -21,14 +21,11 @@ export const findAllToko = async (req: any, res: Response): Promise<Response> =>
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
-    const result = await TokoModel.findAndCountAll({
+    const result = await StoreModel.findAndCountAll({
       where: {
         deleted: 0
-        // ...(Boolean(req.query.search) && {
-        //   [Op.or]: [{ : { [Op.like]: `%${search}%` } }]
-        // })
       },
-      order: [['tokoId', 'desc']],
+      order: [['storeId', 'desc']],
       ...(pagination === 'true' && {
         limit: page.limit,
         offset: page.offset
@@ -38,7 +35,7 @@ export const findAllToko = async (req: any, res: Response): Promise<Response> =>
     const response = ResponseData.success(result)
     response.data = page.formatData(result)
 
-    logger.info('Toko retrieved successfully')
+    logger.info('Store retrieved successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

@@ -3,11 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { createJadwalSchema } from '../../schemas/jadwalSchema'
-import { JadwalModel } from '../../models/jadwal'
+import { ScheduleModel } from '../../models/scheduleModel'
+import { createScheduleSchema } from '../../schemas/scheduleSchema'
 
-export const createJadwal = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(createJadwalSchema, req.body)
+export const createSchedule = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(createScheduleSchema, req.body)
 
   if (error != null) {
     const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,9 +16,9 @@ export const createJadwal = async (req: any, res: Response): Promise<Response> =
   }
 
   try {
-    const jadwal = await JadwalModel.create(value)
-    const response = ResponseData.success(jadwal)
-    logger.info('Jadwal created successfully')
+    const schedule = await ScheduleModel.create(value)
+    const response = ResponseData.success(schedule)
+    logger.info('schedule created successfully')
     return res.status(StatusCodes.CREATED).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`

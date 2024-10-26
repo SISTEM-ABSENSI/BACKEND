@@ -7,44 +7,44 @@ const { ZygoteModel } = require('../zygote')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('jadwal', {
+    await queryInterface.createTable('schedules', {
       ...ZygoteModel, // Common attributes from ZygoteModel
-      jadwal_id: {
+      schedule_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true
       },
-      jadwal_name: {
+      schedule_name: {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      jadwal_description: {
+      schedule_description: {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      jadwal_toko_id: {
+      schedule_store_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'toko',
-          key: 'toko_id'
+          model: 'store', // Update this to match the new store table name
+          key: 'store_id' // Update this to match the new store primary key
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      jadwal_user_id: {
+      schedule_user_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      jadwal_start_date: {
+      schedule_start_date: {
         type: Sequelize.DATE,
         allowNull: true
       },
-      jadwal_end_date: {
+      schedule_end_date: {
         type: Sequelize.DATE,
         allowNull: true
       },
-      jadwal_status: {
+      schedule_status: {
         type: Sequelize.ENUM('waiting', 'checkin', 'checkout'),
         allowNull: true,
         defaultValue: 'waiting'
@@ -57,6 +57,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('jadwal')
+    await queryInterface.dropTable('schedules')
   }
 }

@@ -16,7 +16,7 @@ export interface SaleInstance
     SupplierAttributes {}
 
 export const SupplierModel = sequelize.define<SaleInstance>(
-  'Supplier',
+  'Suppliers',
   {
     ...ZygoteModel,
     supplierId: {
@@ -38,7 +38,7 @@ export const SupplierModel = sequelize.define<SaleInstance>(
     }
   },
   {
-    tableName: 'supplier',
+    tableName: 'suppliers',
     timestamps: false,
     underscored: true,
     freezeTableName: true

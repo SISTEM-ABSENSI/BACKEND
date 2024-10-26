@@ -23,7 +23,7 @@ export interface UserInstance
 
 // Define the UserModel
 export const UserModel = sequelize.define<UserInstance>(
-  'User',
+  'Users',
   {
     ...ZygoteModel,
     userId: {

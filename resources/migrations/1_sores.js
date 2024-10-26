@@ -7,22 +7,22 @@ const { ZygoteModel } = require('../zygote')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('toko', {
+    await queryInterface.createTable('stores', {
       ...ZygoteModel,
-      toko_id: {
+      store_id: {
         type: Sequelize.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true
       },
-      toko_name: {
+      store_name: {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      toko_longitude: {
+      store_longitude: {
         type: Sequelize.STRING(100),
         allowNull: false
       },
-      toko_latitude: {
+      store_latitude: {
         type: Sequelize.STRING(100),
         allowNull: false
       },
@@ -34,6 +34,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('toko')
+    await queryInterface.dropTable('stores')
   }
 }

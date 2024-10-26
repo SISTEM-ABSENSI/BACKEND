@@ -3,11 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { findOneTokoSchema } from '../../schemas/tokoSchema'
-import { TokoModel } from '../../models/tokoModel'
+import { deleteScheduleSchema } from '../../schemas/scheduleSchema'
+import { ScheduleModel } from '../../models/scheduleModel'
 
-export const findOneToko = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findOneTokoSchema, req.params)
+export const removeSchedule = async (req: any, res: Response): Promise<Response> => {
+  const { error, value } = validateRequest(deleteScheduleSchema, req.params)
 
   if (error != null) {
     const message = `Invalid request parameters! ${error.details.map((x) => x.message).join(', ')}`
@@ -16,21 +16,24 @@ export const findOneToko = async (req: any, res: Response): Promise<Response> =>
   }
 
   try {
-    const result = await TokoModel.findOne({
+    const result = await ScheduleModel.findOne({
       where: {
         deleted: 0,
-        tokoId: value.tokoId
+        scheduleId: value.scheduleId
       }
     })
 
     if (result == null) {
-      const message = `Toko not found with ID: ${value.tokoId}`
+      const message = `Schedule not found with ID: ${value.scheduleId}`
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const response = ResponseData.success(result)
-    logger.info('Toko found successfully')
+    result.deleted = 1
+    void result.save()
+
+    const response = ResponseData.success({ message: 'Schedule deleted successfully' })
+    logger.info('Schedule deleted successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`
