@@ -34,6 +34,6 @@ export const findOneScheduleSchema = Joi.object({
 export const findAllScheduleSchema = Joi.object({
   page: Joi.number().integer().optional(),
   size: Joi.number().integer().optional(),
-  search: Joi.string().optional(),
+  search: Joi.string().allow('').optional(),
   pagination: Joi.boolean().optional()
 })

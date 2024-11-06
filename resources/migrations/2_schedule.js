@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-          model: 'store', // Update this to match the new store table name
+          model: 'stores', // Update this to match the new store table name
           key: 'store_id' // Update this to match the new store primary key
         },
         onUpdate: 'CASCADE',

@@ -4,9 +4,9 @@ import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface SupplierAttributes extends ZygoteAttributes {
-  supplierId: number
-  supplierName: number
-  supplierContact: number
+  supplierId: string
+  supplierName: string
+  supplierContact: string
 }
 
 type SuplierCreationAttributes = Optional<SupplierAttributes, 'createdAt' | 'updatedAt'>

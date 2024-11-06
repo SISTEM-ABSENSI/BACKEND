@@ -24,6 +24,6 @@ export const findOneSupplierSchema = Joi.object({
 export const findAllSuppliersSchema = Joi.object({
   page: Joi.number().integer().optional(),
   size: Joi.number().integer().optional(),
-  search: Joi.string().optional(),
+  search: Joi.string().allow('').optional(),
   pagination: Joi.boolean().optional()
 })
