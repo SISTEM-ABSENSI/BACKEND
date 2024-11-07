@@ -40,7 +40,7 @@ export const userLogin = async (req: Request, res: Response): Promise<Response> 
       return res.status(StatusCodes.UNAUTHORIZED).json(ResponseData.error(message))
     }
 
-    const token = generateAccessToken({ userId: user.userId })
+    const token = generateAccessToken({ userId: user.userId, userRole: user.userRole })
     logger.info(`User ${userName} logged in successfully`)
     return res.status(StatusCodes.OK).json(ResponseData.success({ token }))
   } catch (error: any) {

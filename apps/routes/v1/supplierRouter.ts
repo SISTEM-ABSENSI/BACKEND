@@ -1,13 +1,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
 import { supplierControllers } from '../../controllers/supplier'
+import { middleware } from '../../middlewares'
 
 const router = Router()
 
-router.get('/', supplierControllers.findAll)
-router.get('/detail/:supplierId', supplierControllers.findOne)
-router.post('/', supplierControllers.create)
-router.put('/', supplierControllers.update)
-router.delete('/:supplierId', supplierControllers.remove)
+router.get('/', middleware.useAuthorization, supplierControllers.findAll)
+router.get(
+  '/detail/:supplierId',
+  middleware.useAuthorization,
+  supplierControllers.findOne
+)
+router.post('/', middleware.useAuthorization, supplierControllers.create)
+router.patch('/', middleware.useAuthorization, supplierControllers.update)
+router.delete('/:supplierId', middleware.useAuthorization, supplierControllers.remove)
 
 export default router

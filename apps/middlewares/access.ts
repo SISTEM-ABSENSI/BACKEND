@@ -28,7 +28,7 @@ export const useAuthorization = (
       return res.status(StatusCodes.UNAUTHORIZED).json(response)
     }
 
-    req.body.user = verify
+    req.body.jwtPayload = verify
     next()
   } catch (error: any) {
     const message = `unable to process request! error ${error.message}`

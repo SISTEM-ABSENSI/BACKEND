@@ -6,6 +6,7 @@ import { type ZygoteAttributes, ZygoteModel } from './zygote'
 export interface StoreAttributes extends ZygoteAttributes {
   storeId: number
   storeName: string
+  storeAddress: string
   storeLongitude: string
   storeLatitude: string
 }
@@ -26,6 +27,10 @@ export const StoreModel = sequelize.define<StoreInstance>(
       primaryKey: true
     },
     storeName: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    storeAddress: {
       type: DataTypes.STRING(100),
       allowNull: false
     },

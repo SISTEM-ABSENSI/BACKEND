@@ -7,6 +7,7 @@ const router = Router()
 
 router.get(
   '/',
+  middleware.useAuthorization,
   async (req: Request, res: Response) => await UsersController.findAll(req, res)
 )
 
@@ -18,11 +19,13 @@ router.get(
 
 router.patch(
   '/',
+  middleware.useAuthorization,
   async (req: Request, res: Response) => await UsersController.update(req, res)
 )
 
 router.delete(
   '/',
+  middleware.useAuthorization,
   async (req: Request, res: Response) => await UsersController.remove(req, res)
 )
 

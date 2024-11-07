@@ -18,16 +18,20 @@ module.exports = {
         type: Sequelize.STRING(80),
         allowNull: false
       },
-      user_email: {
-        type: Sequelize.STRING(80),
-        allowNull: false
-      },
       user_password: {
         type: Sequelize.STRING,
         allowNull: false
       },
+      user_contact: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      user_device_id: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       user_role: {
-        type: Sequelize.ENUM('admin', 'spg', 'supplier'),
+        type: Sequelize.ENUM('admin', 'superAdmin', 'spg', 'supplier'),
         allowNull: false,
         defaultValue: 'supplier'
       }

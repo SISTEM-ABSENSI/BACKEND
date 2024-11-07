@@ -1,6 +1,8 @@
 import Joi from 'joi'
+import { jwtPayloadSchema } from './jwtPayloadSchema'
 
 export const createScheduleSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   scheduleName: Joi.string().max(100).required(), // Validasi nama schedule
   scheduleDescription: Joi.string().required(), // Validasi deskripsi schedule
   scheduleStoreId: Joi.number().integer().positive().required(), // Foreign key ke Store
@@ -12,6 +14,7 @@ export const createScheduleSchema = Joi.object({
 })
 
 export const updateScheduleSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   scheduleId: Joi.number().integer().positive().required(), // ID wajib untuk update
   scheduleName: Joi.string().max(100).optional(),
   scheduleDescription: Joi.string().optional(),
@@ -24,14 +27,17 @@ export const updateScheduleSchema = Joi.object({
 })
 
 export const deleteScheduleSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   scheduleId: Joi.number().integer().positive().required() // Wajib untuk menghapus
 })
 
 export const findOneScheduleSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   scheduleId: Joi.number().integer().positive().required()
 })
 
 export const findAllScheduleSchema = Joi.object({
+  jwtPayload: jwtPayloadSchema,
   page: Joi.number().integer().optional(),
   size: Joi.number().integer().optional(),
   search: Joi.string().allow('').optional(),

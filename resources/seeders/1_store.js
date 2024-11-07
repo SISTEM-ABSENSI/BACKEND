@@ -8,6 +8,7 @@ module.exports = {
       {
         store_id: 1,
         store_name: 'Store A',
+        store_address: "Jl. had dsds",
         store_longitude: '106.845599', // Example longitude
         store_latitude: '-6.208763', // Example latitude
         created_at: new Date()
@@ -15,6 +16,7 @@ module.exports = {
       {
         store_id: 2,
         store_name: 'Store B',
+        store_address: "Jl. Jakarta",
         store_longitude: '106.845601', // Example longitude
         store_latitude: '-6.208764', // Example latitude
         created_at: new Date()
