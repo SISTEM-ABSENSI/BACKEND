@@ -16,13 +16,13 @@ export const createScheduleSchema = Joi.object({
 export const updateScheduleSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
   scheduleId: Joi.number().integer().positive().required(), // ID wajib untuk update
-  scheduleName: Joi.string().max(100).optional(),
-  scheduleDescription: Joi.string().optional(),
-  scheduleStoreId: Joi.number().integer().positive().optional(),
-  scheduleUserId: Joi.number().integer().positive().optional(),
-  scheduleStartDate: Joi.date().optional(),
-  scheduleEndDate: Joi.date().optional(),
-  scheduleStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional(),
+  scheduleName: Joi.string().allow('').max(100).optional(),
+  scheduleDescription: Joi.string().allow('').optional(),
+  scheduleStoreId: Joi.number().allow('').integer().positive().optional(),
+  scheduleUserId: Joi.number().allow('').integer().positive().optional(),
+  scheduleStartDate: Joi.date().allow('').optional(),
+  scheduleEndDate: Joi.date().allow('').optional(),
+  scheduleStatus: Joi.string().allow('').valid('waiting', 'checkin', 'checkout').optional(),
   updatedAt: Joi.date().optional()
 })
 

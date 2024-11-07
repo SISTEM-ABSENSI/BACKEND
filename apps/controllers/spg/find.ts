@@ -9,7 +9,7 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllUsersSchema, findOneUserSchema } from '../../schemas/user'
 import logger from '../../utilities/logger'
 
-export const findAllUser = async (req: any, res: Response): Promise<Response> => {
+export const findAllSpg = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllUsersSchema, req.query)
 
   if (error != null) {
@@ -27,12 +27,20 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
       where: {
         deleted: { [Op.eq]: 0 },
         userId: { [Op.not]: req.body?.jwtPayload?.userId },
-        userRole: { [Op.not]: "spg"},
+        userRole: 'spg',
         ...(Boolean(search) && {
           [Op.or]: [{ userName: { [Op.like]: `%${search}%` } }]
         })
       },
-      attributes: ['userId', 'userId', 'userName', 'userContact', 'userRole', 'createdAt', 'updatedAt'],
+      attributes: [
+        'userId',
+        'userDeviceId',
+        'userName',
+        'userContact',
+        'userRole',
+        'createdAt',
+        'updatedAt'
+      ],
       order: [['userId', 'desc']],
       ...(pagination === 'true' && {
         limit: page.limit,
@@ -50,7 +58,7 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
   }
 }
 
-export const findOneUser = async (req: any, res: Response): Promise<Response> => {
+export const findOneSpg = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.params)
 
   if (error != null) {
@@ -65,9 +73,17 @@ export const findOneUser = async (req: any, res: Response): Promise<Response> =>
     const user = await UserModel.findOne({
       where: {
         deleted: { [Op.eq]: 0 },
-        userId: { [Op.eq]: userId }
+        userId: { [Op.eq]: userId },
+        userRole: 'spg'
       },
-      attributes: ['userId', 'userName', 'createdAt', 'updatedAt']
+      attributes: [
+        'userId',
+        'userName',
+        'userDeviceId',
+        'userContact',
+        'createdAt',
+        'updatedAt'
+      ]
     })
 
     if (user == null) {

@@ -17,7 +17,8 @@ export const updateUser = async (req: any, res: Response): Promise<Response> => 
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  const { userId, userName, userPassword, userRole } = value as UserAttributes
+  const { userId, userName, userContact, userDeviceId, userPassword, userRole } =
+    value as UserAttributes
 
   try {
     const user = await UserModel.findOne({
@@ -34,9 +35,11 @@ export const updateUser = async (req: any, res: Response): Promise<Response> => 
     }
 
     const updatedData: Partial<UserAttributes> = {
-      ...(userName.length > 0 && { userName }),
-      ...(userPassword.length > 0 && { userPassword: hashPassword(userPassword) }),
-      ...(userRole.length > 0 && { userRole })
+      ...(userName?.length > 0 && { userName }),
+      ...(userContact?.length > 0 && { userContact }),
+      ...(userDeviceId?.length > 0 && { userDeviceId }),
+      ...(userPassword?.length > 0 && { userPassword: hashPassword(userPassword) }),
+      ...(userRole?.length > 0 && { userRole })
     }
 
     await UserModel.update(updatedData, {

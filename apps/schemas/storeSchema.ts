@@ -13,11 +13,10 @@ export const createStoreSchema = Joi.object({
 export const updateStoreSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
   storeId: Joi.number().integer().positive().required(),
-  storeName: Joi.string().max(100).optional(),
-  storeAddress: Joi.string().required(),
-  storeLongitude: Joi.string().max(100).optional(),
-  storeLatitude: Joi.string().max(100).optional(),
-  updatedAt: Joi.date().optional()
+  storeName: Joi.string().allow('').max(100).optional(),
+  storeAddress: Joi.string().allow('').required(),
+  storeLongitude: Joi.string().allow('').max(100).optional(),
+  storeLatitude: Joi.string().allow('').max(100).optional(),
 })
 
 export const deleteStoreSchema = Joi.object({

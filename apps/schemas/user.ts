@@ -42,7 +42,8 @@ export const userSchema = Joi.object({
 export const updateUserSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
   userId: Joi.string().required(),
-  userName: Joi.string().min(3).max(30).optional(),
-  userPassword: Joi.string().min(6).max(128).optional(),
-  userRole: Joi.string().valid('admin', 'superAdmin', 'spg', 'supplier').optional()
+  userName: Joi.string().allow('').min(3).max(30).optional(),
+  userPassword: Joi.string().allow('').min(6).max(128).optional(),
+  userContact: Joi.string().allow('').optional(),
+  userRole: Joi.string().allow('').valid('admin', 'superAdmin', 'spg', 'supplier').optional()
 })
