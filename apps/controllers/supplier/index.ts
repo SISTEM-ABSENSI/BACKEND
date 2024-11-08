@@ -1,13 +1,5 @@
-import { createSupplier } from './create'
-import { findAllSupplier } from './findAll'
-import { findOneSupplier } from './findOne'
-import { removeSupplier } from './remove'
-import { updateSupplier } from './update'
+import { findAllSupplier } from "./find";
 
-export const supplierControllers = {
-  findAll: findAllSupplier,
-  findOne: findOneSupplier,
-  create: createSupplier,
-  update: updateSupplier,
-  remove: removeSupplier
+export const supplierController = {
+    findAll: findAllSupplier,
 }

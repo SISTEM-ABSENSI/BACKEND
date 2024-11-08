@@ -47,12 +47,11 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
           attributes: [
             'userId',
             'userName',
-            'userRole',
-            'userDeviceId',
             'userContact'
           ]
         }
       ],
+      attributes: ['scheduleStatus'],
       order: [['scheduleId', 'desc']],
       ...(pagination === 'true' && {
         limit: page.limit,

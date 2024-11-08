@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express'
 import { middleware } from '../../middlewares'
-import { supplierController } from '../../controllers/supplier'
+import { locationController } from '../../controllers/location'
 
 const router = Router()
 
-router.get('/', middleware.useAuthorization, supplierController.findAll)
+router.get('/', locationController.findAllAttendance)
+
 
 export default router

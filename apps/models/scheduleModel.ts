@@ -3,6 +3,7 @@ import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 import { StoreModel } from './storeModel'
+import { UserModel } from './user'
 
 export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleId: number
@@ -75,3 +76,8 @@ export const ScheduleModel = sequelize.define<ScheduleInstance>(
 // One-to-One relation between Schedule and Toko
 ScheduleModel.belongsTo(StoreModel, { foreignKey: 'scheduleStoreId', as: 'store' })
 StoreModel.hasOne(ScheduleModel, { foreignKey: 'scheduleStoreId', as: 'schedule' })
+ScheduleModel.belongsTo(UserModel, { foreignKey: 'scheduleUserId', as: 'user' })
+UserModel.hasOne(ScheduleModel, { foreignKey: 'scheduleUserId', as: 'schedule' })
+
+
+

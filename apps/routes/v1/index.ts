@@ -9,6 +9,7 @@ import storeRoutes from './storeRouter'
 import attendanceRoutes from './attendanceRouter'
 import statisticRoutes from './statisticRouter'
 import spgRoutes from './spgRouter'
+import locationRoutes from './locationRouter'
 import uploadFileRoutes from './uploadFileRouter'
 
 export const appRouterV1 = (app: Express): void => {
@@ -21,5 +22,6 @@ export const appRouterV1 = (app: Express): void => {
   app.use('/api/v1/attendances', attendanceRoutes)
   app.use('/api/v1/statistic', statisticRoutes)
   app.use('/api/v1/spg', spgRoutes)
+  app.use('/api/v1/locations', locationRoutes)
   app.use('/api/v1/files', uploadFileRoutes)
 }

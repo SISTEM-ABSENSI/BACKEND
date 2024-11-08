@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes'
 import { ResponseData } from '../../utilities/response'
 import { Op } from 'sequelize'
 import { UserModel } from '../../models/user'
-import { SupplierModel } from '../../models/supplierModel'
 import { StoreModel } from '../../models/storeModel'
 import logger from '../../utilities/logger'
 
@@ -15,9 +14,10 @@ export const findTotal = async (req: any, res: Response): Promise<any> => {
       }
     })
 
-    const totalSuppliers = await SupplierModel.count({
+    const totalSuppliers = await UserModel.count({
       where: {
-        deleted: { [Op.eq]: 0 }
+        deleted: { [Op.eq]: 0 },
+        userRole: 'supplier'
       }
     })
 
