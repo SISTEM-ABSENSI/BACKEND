@@ -20,13 +20,16 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
   }
 
   try {
-    const { page: queryPage, size: querySize, pagination } = value
+    const { page: queryPage, size: querySize, pagination, search } = value
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
     const result = await ScheduleModel.findAndCountAll({
       where: {
         deleted: 0,
+        ...(Boolean(search) && {
+          [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
+        }),
         [Op.or]: [{ scheduleStatus: 'checkin' }, { scheduleStatus: 'checkout' }]
       },
       include: [
@@ -44,13 +47,7 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
         {
           model: UserModel,
           as: 'user',
-          attributes: [
-            'userId',
-            'userName',
-            'userRole',
-            'userDeviceId',
-            'userContact'
-          ]
+          attributes: ['userId', 'userName', 'userRole', 'userDeviceId', 'userContact']
         }
       ],
       order: [['scheduleId', 'desc']],

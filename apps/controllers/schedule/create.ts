@@ -16,6 +16,7 @@ export const createSchedule = async (req: any, res: Response): Promise<Response>
   }
 
   try {
+    value.scheduleUserId = req.body?.jwtPayload?.userId
     const schedule = await ScheduleModel.create(value)
     const response = ResponseData.success(schedule)
     logger.info('schedule created successfully')

@@ -16,5 +16,7 @@ export const findAllAttendanceSchema = Joi.object({
   page: Joi.number().integer().optional(),
   size: Joi.number().integer().optional(),
   search: Joi.string().allow('').optional(),
-  pagination: Joi.boolean().optional()
+  pagination: Joi.boolean().optional(),
+  startDate: Joi.string().allow('').optional(),
+  endDate: Joi.string().allow('').optional()
 })

@@ -7,6 +7,7 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllScheduleSchema } from '../../schemas/scheduleSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
+import { Op, fn, col } from 'sequelize'
 
 export const findAllSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllScheduleSchema, req.query)
@@ -18,19 +19,41 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
   }
 
   try {
-    const { page: queryPage, size: querySize, pagination } = value
+    const {
+      page: queryPage,
+      size: querySize,
+      pagination,
+      search,
+      scheduleStatus,
+      scheduleStatusNot
+    } = value
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
+    console.log(value)
     const result = await ScheduleModel.findAndCountAll({
       where: {
-        deleted: 0
+        deleted: 0,
+        ...(Boolean(search) && {
+          [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
+        }),
+        ...(Boolean(scheduleStatus) && {
+          scheduleStatus: scheduleStatus
+        }),
+        ...(Boolean(scheduleStatusNot) && {
+          scheduleStatus: {
+            [Op.not]: scheduleStatusNot
+          }
+        })
       },
       include: {
         model: StoreModel,
         as: 'store'
       },
-      order: [['scheduleId', 'desc']],
+      order: [
+        [fn('FIELD', col('scheduleStatus'), 'waiting', 'checkin', 'checkout'), 'ASC'],
+        ['scheduleId', 'desc']
+      ],
       ...(pagination === 'true' && {
         limit: page.limit,
         offset: page.offset
