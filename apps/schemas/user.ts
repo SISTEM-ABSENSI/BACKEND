@@ -4,7 +4,8 @@ import { jwtPayloadSchema } from './jwtPayloadSchema'
 export const userLoginSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
   userName: Joi.string().required(),
-  userPassword: Joi.string().required()
+  userPassword: Joi.string().required(),
+  userDeviceId: Joi.string().optional().allow('')
 })
 
 export const userRegistrationSchema = Joi.object({
@@ -12,8 +13,8 @@ export const userRegistrationSchema = Joi.object({
   userName: Joi.string().required(),
   userRole: Joi.string().valid('admin', 'superAdmin', 'spg', 'supplier').required(),
   userPassword: Joi.string().min(6).required(),
-  userDeviceId: Joi.string().optional(),
-  userContact: Joi.string().optional()
+  userDeviceId: Joi.string().optional().allow(''),
+  userContact: Joi.string().optional().allow('')
 })
 
 export const findAllUsersSchema = Joi.object({
@@ -41,9 +42,12 @@ export const userSchema = Joi.object({
 
 export const updateUserSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
-  userId: Joi.string().required(),
+  userId: Joi.string().optional().allow(''),
   userName: Joi.string().allow('').min(3).max(30).optional(),
   userPassword: Joi.string().allow('').min(6).max(128).optional(),
   userContact: Joi.string().allow('').optional(),
-  userRole: Joi.string().allow('').valid('admin', 'superAdmin', 'spg', 'supplier').optional()
+  userRole: Joi.string()
+    .allow('')
+    .valid('admin', 'superAdmin', 'spg', 'supplier')
+    .optional()
 })

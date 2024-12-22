@@ -23,6 +23,12 @@ router.patch(
   async (req: Request, res: Response) => await UsersController.update(req, res)
 )
 
+router.patch(
+  '/spg',
+  middleware.useAuthorization,
+  async (req: Request, res: Response) => await UsersController.updateSpg(req, res)
+)
+
 router.delete(
   '/',
   middleware.useAuthorization,

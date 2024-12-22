@@ -33,10 +33,17 @@ export const userLogin = async (req: Request, res: Response): Promise<Response> 
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
+    if (user.userRole === 'spg' && user.userDeviceId !== value.userDeviceId) {
+      const message =
+        'Device tidak ditemukan! Pastikan login di device yang sama pada saat melakukan registrasi'
+      logger.error(`Login attempt failed: ${message}`)
+      return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
+    }
+
     const isPasswordValid = hashPassword(userPassword) === user.userPassword
     if (!isPasswordValid) {
       const message = 'Invalid email and password combination!'
-      logger.info(`Login attempt failed: ${message}`)
+      logger.error(`Login attempt failed: ${message}`)
       return res.status(StatusCodes.UNAUTHORIZED).json(ResponseData.error(message))
     }
 

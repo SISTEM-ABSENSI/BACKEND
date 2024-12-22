@@ -12,7 +12,14 @@ export const findMyProfile = async (req: any, res: Response): Promise<any> => {
         deleted: { [Op.eq]: 0 },
         userId: { [Op.eq]: req.body?.jwtPayload?.userId }
       },
-      attributes: ['userId', 'userName', 'userRole', 'createdAt', 'updatedAt']
+      attributes: [
+        'userId',
+        'userName',
+        'userRole',
+        'userContact',
+        'createdAt',
+        'updatedAt'
+      ]
     })
 
     if (result == null) {
