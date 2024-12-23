@@ -4,7 +4,8 @@ import { sequelize } from '.'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface UserAttributes extends ZygoteAttributes {
-  userId: string
+  userId: number
+  userSupplierId: number
   userName: string
   userPassword: string
   userRole: 'admin' | 'superAdmin' | 'spg' | 'supplier'
@@ -30,6 +31,9 @@ export const UserModel = sequelize.define<UserInstance>(
       autoIncrement: true,
       primaryKey: true
     },
+    userSupplierId: {
+      type: DataTypes.INTEGER
+    },
     userName: {
       type: DataTypes.STRING,
       allowNull: false
@@ -45,7 +49,8 @@ export const UserModel = sequelize.define<UserInstance>(
     },
     userDeviceId: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      defaultValue: '_'
     },
     userContact: {
       type: DataTypes.STRING,

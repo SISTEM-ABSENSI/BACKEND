@@ -42,7 +42,7 @@ export const findAllSpg = async (req: any, res: Response): Promise<Response> => 
         'updatedAt'
       ],
       order: [['userId', 'desc']],
-      ...(pagination === 'true' && {
+      ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
       })

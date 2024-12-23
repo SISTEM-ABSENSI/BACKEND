@@ -56,7 +56,7 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
         [fn('FIELD', col('scheduleStatus'), 'waiting', 'checkin', 'checkout'), 'ASC'],
         ['scheduleId', 'desc']
       ],
-      ...(pagination === 'true' && {
+      ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
       })

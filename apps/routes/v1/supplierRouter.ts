@@ -5,6 +5,7 @@ import { supplierController } from '../../controllers/supplier'
 
 const router = Router()
 
-router.get('/', middleware.useAuthorization, supplierController.findAll)
+router.get('/', supplierController.findAll)
+router.get('/spg', middleware.useAuthorization, supplierController.findSpg)
 
 export default router

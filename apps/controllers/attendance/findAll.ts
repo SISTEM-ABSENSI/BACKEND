@@ -51,7 +51,7 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
         }
       ],
       order: [['scheduleId', 'desc']],
-      ...(pagination === 'true' && {
+      ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
       })

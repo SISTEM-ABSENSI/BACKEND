@@ -9,7 +9,7 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllUsersSchema, findOneUserSchema } from '../../schemas/user'
 import logger from '../../utilities/logger'
 
-export const findAllSupplier = async (req: any, res: Response): Promise<Response> => {
+export const findAllSpg = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllUsersSchema, req.query)
 
   if (error != null) {
@@ -18,7 +18,7 @@ export const findAllSupplier = async (req: any, res: Response): Promise<Response
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  const { page: queryPage, size: querySize, search, pagination } = value
+  const { page: queryPage, size: querySize, search, pagination, userId } = value
 
   try {
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
@@ -26,7 +26,8 @@ export const findAllSupplier = async (req: any, res: Response): Promise<Response
     const users = await UserModel.findAndCountAll({
       where: {
         deleted: { [Op.eq]: 0 },
-        userRole: 'supplier',
+        userSupplierId: userId,
+        userRole: 'spg',
         ...(Boolean(search) && {
           [Op.or]: [{ userName: { [Op.like]: `%${search}%` } }]
         })
@@ -72,7 +73,7 @@ export const findOneSpg = async (req: any, res: Response): Promise<Response> => 
     const user = await UserModel.findOne({
       where: {
         deleted: { [Op.eq]: 0 },
-        userId: { [Op.eq]: userId },
+        userSupplierId: userId,
         userRole: 'spg'
       },
       attributes: [

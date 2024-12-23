@@ -18,7 +18,7 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  const { page: queryPage, size: querySize, search, pagination } = value
+  const { page: queryPage, size: querySize, search, pagination, userRole } = value
 
   try {
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
@@ -27,14 +27,25 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
       where: {
         deleted: { [Op.eq]: 0 },
         userId: { [Op.not]: req.body?.jwtPayload?.userId },
-        userRole: { [Op.not]: "spg"},
+        userRole: { [Op.not]: 'spg' },
+        ...(Boolean(userRole) && {
+          userRole: userRole
+        }),
         ...(Boolean(search) && {
           [Op.or]: [{ userName: { [Op.like]: `%${search}%` } }]
         })
       },
-      attributes: ['userId', 'userId', 'userName', 'userContact', 'userRole', 'createdAt', 'updatedAt'],
+      attributes: [
+        'userId',
+        'userId',
+        'userName',
+        'userContact',
+        'userRole',
+        'createdAt',
+        'updatedAt'
+      ],
       order: [['userId', 'desc']],
-      ...(pagination === 'true' && {
+      ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
       })

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { APP_CONFIGS } from '../configs'
 
 export interface JwtPayloadTypes {
-  userId: string,
+  userId: number
   userRole: string
 }
 

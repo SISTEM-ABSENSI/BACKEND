@@ -19,6 +19,8 @@ export const findAllStore = async (req: any, res: Response): Promise<Response> =
   try {
     const { page: queryPage, size: querySize, pagination } = value
 
+    console.log(value)
+
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
     const result = await StoreModel.findAndCountAll({
@@ -26,7 +28,7 @@ export const findAllStore = async (req: any, res: Response): Promise<Response> =
         deleted: 0
       },
       order: [['storeId', 'desc']],
-      ...(pagination === 'true' && {
+      ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
       })
