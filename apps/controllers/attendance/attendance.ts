@@ -6,6 +6,11 @@ import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
 import { updateAttendanceSchema } from '../../schemas/attendanceSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
+import {
+  AttendanceHistoryAttributes,
+  AttendanceHistoryModel
+} from '../../models/attendanceHistoryModel'
+import moment from 'moment'
 
 export const attendance = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(updateAttendanceSchema, {
@@ -50,6 +55,14 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
         where: { deleted: 0, scheduleId: value.attendanceId }
       }
     )
+
+    const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
+      attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      attendanceHistoryCategory: newStatus,
+      attendanceHistoryUserId: scheduleRecord.scheduleUserId
+    }
+
+    await AttendanceHistoryModel.create(attendanceHistoryPayload)
 
     const response = ResponseData.success({
       message: `Attendance updated to ${newStatus} successfully`

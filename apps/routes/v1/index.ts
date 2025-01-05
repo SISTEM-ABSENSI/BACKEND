@@ -11,6 +11,7 @@ import statisticRoutes from './statisticRouter'
 import spgRoutes from './spgRouter'
 import locationRoutes from './locationRouter'
 import uploadFileRoutes from './uploadFileRouter'
+import attendanceHistoryRoutes from './attendanceHistoryRouter'
 
 export const appRouterV1 = (app: Express): void => {
   app.get('/api/v1', async (req: Request, res: Response) => await index(req, res))
@@ -20,6 +21,7 @@ export const appRouterV1 = (app: Express): void => {
   app.use('/api/v1/my-profile', myProfileRoutes)
   app.use('/api/v1/stores', storeRoutes)
   app.use('/api/v1/attendances', attendanceRoutes)
+  app.use('/api/v1/attendances/histories', attendanceHistoryRoutes)
   app.use('/api/v1/statistic', statisticRoutes)
   app.use('/api/v1/spg', spgRoutes)
   app.use('/api/v1/locations', locationRoutes)
