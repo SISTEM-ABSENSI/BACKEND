@@ -30,6 +30,8 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
 
+    console.log(req.query)
+
     const result = await ScheduleModel.findAndCountAll({
       where: {
         deleted: 0,
@@ -39,9 +41,10 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
         ...(Boolean(search) && {
           [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
         }),
-        ...(Boolean(scheduleStatus) && {
-          scheduleStatus: scheduleStatus
-        }),
+        ...(Boolean(scheduleStatus) &&
+          scheduleStatus !== 'all' && {
+            scheduleStatus: scheduleStatus
+          }),
         ...(Boolean(scheduleStatusNot) && {
           scheduleStatus: {
             [Op.not]: scheduleStatusNot

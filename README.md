@@ -4,9 +4,9 @@
 
 ## How to install app
 
-- ````bash
-  npm install```
-  ````
+- ```bash
+  npm install
+  ```
 
 ## Migration
 
