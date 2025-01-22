@@ -7,7 +7,7 @@ import { validateRequest } from '../../utilities/validateRequest'
 import { findOneUserSchema } from '../../schemas/user'
 import logger from '../../utilities/logger'
 
-export const removeUser = async (req: any, res: Response): Promise<Response> => {
+export const remove = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.query)
 
   if (error != null) {

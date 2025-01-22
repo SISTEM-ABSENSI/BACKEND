@@ -1,4 +1,3 @@
-// controller.ts
 import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
@@ -9,55 +8,7 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllUsersSchema, findOneUserSchema } from '../../schemas/user'
 import logger from '../../utilities/logger'
 
-export const findAllSupplier = async (req: any, res: Response): Promise<Response> => {
-  const { error, value } = validateRequest(findAllUsersSchema, req.query)
-
-  if (error != null) {
-    const message = `Invalid query parameter! ${error.details.map((x) => x.message).join(', ')}`
-    logger.warn(message)
-    return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
-  }
-
-  const { page: queryPage, size: querySize, search, pagination } = value
-
-  try {
-    const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
-
-    const users = await UserModel.findAndCountAll({
-      where: {
-        deleted: { [Op.eq]: 0 },
-        userRole: 'supplier',
-        ...(Boolean(search) && {
-          [Op.or]: [{ userName: { [Op.like]: `%${search}%` } }]
-        })
-      },
-      attributes: [
-        'userId',
-        'userDeviceId',
-        'userName',
-        'userContact',
-        'userRole',
-        'createdAt',
-        'updatedAt'
-      ],
-      order: [['userId', 'desc']],
-      ...(pagination === true && {
-        limit: page.limit,
-        offset: page.offset
-      })
-    })
-
-    const response = ResponseData.success(page.formatData(users))
-    logger.info('Fetched all users successfully')
-    return res.status(StatusCodes.OK).json(response)
-  } catch (error: any) {
-    const message = `Unable to process request! Error: ${error.message}`
-    logger.error(message, { stack: error.stack })
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ResponseData.error(message))
-  }
-}
-
-export const findOneSpg = async (req: any, res: Response): Promise<Response> => {
+export const findOneUser = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.params)
 
   if (error != null) {
@@ -73,7 +24,7 @@ export const findOneSpg = async (req: any, res: Response): Promise<Response> => 
       where: {
         deleted: { [Op.eq]: 0 },
         userId: { [Op.eq]: userId },
-        userRole: 'spg'
+        userRole: 'user'
       },
       attributes: [
         'userId',

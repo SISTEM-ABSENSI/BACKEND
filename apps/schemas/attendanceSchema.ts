@@ -3,7 +3,8 @@ import { jwtPayloadSchema } from './jwtPayloadSchema'
 
 export const updateAttendanceSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
-  attendanceId: Joi.number().integer().positive().required()
+  attendanceId: Joi.number().integer().positive().required(),
+  attendancePhoto: Joi.string().required()
 })
 
 export const findOneAttendanceSchema = Joi.object({

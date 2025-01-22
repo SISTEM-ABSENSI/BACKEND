@@ -11,11 +11,10 @@ export const userLoginSchema = Joi.object({
 export const userRegistrationSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
   userName: Joi.string().required(),
-  userRole: Joi.string().valid('admin', 'superAdmin', 'spg', 'supplier').required(),
+  userRole: Joi.string().valid('admin', 'superAdmin', 'user').required(),
   userPassword: Joi.string().min(6).required(),
   userDeviceId: Joi.string().optional().allow(''),
-  userContact: Joi.string().optional().allow(''),
-  userSupplierId: Joi.number().optional()
+  userContact: Joi.string().optional().allow('')
 })
 
 export const findAllUsersSchema = Joi.object({
@@ -38,10 +37,9 @@ export const userSchema = Joi.object({
   userId: Joi.string().required(),
   userName: Joi.string().min(3).max(30).required(),
   userPassword: Joi.string().min(6).max(128).required(),
-  userRole: Joi.string().valid('admin', 'superAdmin', 'spg', 'supplier').required(),
+  userRole: Joi.string().valid('admin', 'superAdmin', 'user').required(),
   userDeviceId: Joi.string().optional(),
-  userContact: Joi.string().optional(),
-  userSupplierId: Joi.number().optional()
+  userContact: Joi.string().optional()
 })
 
 export const updateUserSchema = Joi.object({
@@ -50,9 +48,9 @@ export const updateUserSchema = Joi.object({
   userName: Joi.string().allow('').min(3).max(30).optional(),
   userPassword: Joi.string().allow('').min(6).max(128).optional(),
   userContact: Joi.string().allow('').optional(),
-  userSupplierId: Joi.number().optional(),
   userRole: Joi.string()
     .allow('')
-    .valid('admin', 'superAdmin', 'spg', 'supplier')
+    .valid('admin', 'superAdmin', 'user')
+    .optional()
     .optional()
 })

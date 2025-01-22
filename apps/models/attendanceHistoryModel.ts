@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
@@ -7,6 +6,7 @@ export interface AttendanceHistoryAttributes extends ZygoteAttributes {
   attendanceHistoryId: number
   attendanceHistoryUserId: number
   attendanceHistoryTime: string
+  attendanceHistoryPhoto: string
   attendanceHistoryCategory: 'checkin' | 'checkout' | 'outside'
 }
 
@@ -38,6 +38,10 @@ export const AttendanceHistoryModel = sequelize.define<AttendanceHistoryInstance
     },
     attendanceHistoryCategory: {
       type: DataTypes.ENUM('checkin', 'checkout', 'outside'),
+      allowNull: false
+    },
+    attendanceHistoryPhoto: {
+      type: DataTypes.STRING,
       allowNull: false
     }
   },

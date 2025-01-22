@@ -5,6 +5,7 @@ export const attendanceHistorySchema = Joi.object({
   attendanceHistoryId: Joi.number().integer().positive().required(),
   attendanceHistoryUserId: Joi.number().integer().positive().required(),
   attendanceHistoryTime: Joi.string().isoDate().required(),
+  attendanceHistoryPhoto: Joi.string().required(),
   attendanceHistoryCategory: Joi.string()
     .valid('checkin', 'checkout', 'outside')
     .required()

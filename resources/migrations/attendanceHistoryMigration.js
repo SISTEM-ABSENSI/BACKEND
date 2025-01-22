@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+      attendance_history_photo: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       attendance_history_category: {
         type: Sequelize.ENUM('checkin', 'checkout', 'outside'),
         allowNull: false

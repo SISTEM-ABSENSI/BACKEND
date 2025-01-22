@@ -8,7 +8,7 @@ import { updateUserSchema } from '../../schemas/user'
 import { hashPassword } from '../../utilities/scure_password'
 import logger from '../../utilities/logger'
 
-export const updateUser = async (req: any, res: Response): Promise<Response> => {
+export const update = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(updateUserSchema, req.body)
 
   if (error != null) {

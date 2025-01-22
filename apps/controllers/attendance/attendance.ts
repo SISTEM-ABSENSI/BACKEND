@@ -59,7 +59,8 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
       attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
       attendanceHistoryCategory: newStatus,
-      attendanceHistoryUserId: scheduleRecord.scheduleUserId
+      attendanceHistoryUserId: scheduleRecord.scheduleUserId,
+      attendanceHistoryPhoto: value.attendancePhoto
     }
 
     await AttendanceHistoryModel.create(attendanceHistoryPayload)

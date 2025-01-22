@@ -10,24 +10,25 @@ export const findTotal = async (req: any, res: Response): Promise<any> => {
   try {
     const totalUsers = await UserModel.count({
       where: {
-        deleted: { [Op.eq]: 0 }
+        deleted: { [Op.eq]: 0 },
+        userRole: 'user'
       }
     })
 
-    const totalSuppliers = await UserModel.count({
+    const totalAdmins = await UserModel.count({
       where: {
         deleted: { [Op.eq]: 0 },
-        userRole: 'supplier'
+        userRole: 'admin'
       }
     })
 
-    const totalSpg = await UserModel.count({
+    const totalSuperAdmins = await UserModel.count({
       where: {
         deleted: { [Op.eq]: 0 },
-        userRole: 'spg'
+        userRole: 'superadmin'
       }
     })
-    
+
     const totalStores = await StoreModel.count({
       where: {
         deleted: { [Op.eq]: 0 }
@@ -36,9 +37,9 @@ export const findTotal = async (req: any, res: Response): Promise<any> => {
 
     const response = ResponseData.success({
       totalUsers,
-      totalStores,
-      totalSpg,
-      totalSuppliers
+      totalAdmins,
+      totalSuperAdmins,
+      totalStores
     })
 
     logger.info('Store found successfully')

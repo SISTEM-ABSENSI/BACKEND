@@ -14,10 +14,6 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
-      user_supplier_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
       user_name: {
         type: Sequelize.STRING(80),
         allowNull: false
@@ -36,9 +32,9 @@ module.exports = {
         defaultValue: '_'
       },
       user_role: {
-        type: Sequelize.ENUM('admin', 'superAdmin', 'spg', 'supplier'),
+        type: Sequelize.ENUM('admin', 'superAdmin', 'user'),
         allowNull: false,
-        defaultValue: 'spg'
+        defaultValue: 'user'
       }
     })
   },

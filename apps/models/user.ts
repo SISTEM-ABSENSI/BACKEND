@@ -8,7 +8,7 @@ export interface UserAttributes extends ZygoteAttributes {
   userSupplierId: number
   userName: string
   userPassword: string
-  userRole: 'admin' | 'superAdmin' | 'spg' | 'supplier'
+  userRole: 'admin' | 'superAdmin' | 'user'
   userDeviceId: string
   userContact: string
 }
@@ -43,9 +43,9 @@ export const UserModel = sequelize.define<UserInstance>(
       allowNull: false
     },
     userRole: {
-      type: DataTypes.ENUM('admin', 'superAdmin', 'spg', 'supplier'),
+      type: DataTypes.ENUM('admin', 'superAdmin', 'user'),
       allowNull: false,
-      defaultValue: 'spg'
+      defaultValue: 'user'
     },
     userDeviceId: {
       type: DataTypes.STRING,

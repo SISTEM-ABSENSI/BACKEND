@@ -1,4 +1,3 @@
-// controller.ts
 import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { Op } from 'sequelize'
@@ -9,7 +8,7 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllUsersSchema, findOneUserSchema } from '../../schemas/user'
 import logger from '../../utilities/logger'
 
-export const findAllUser = async (req: any, res: Response): Promise<Response> => {
+export const findAll = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllUsersSchema, req.query)
 
   if (error != null) {
@@ -27,7 +26,7 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
       where: {
         deleted: { [Op.eq]: 0 },
         userId: { [Op.not]: req.body?.jwtPayload?.userId },
-        userRole: { [Op.not]: 'spg' },
+        userRole: { [Op.not]: 'user' },
         ...(Boolean(userRole) && {
           userRole: userRole
         }),
@@ -36,7 +35,6 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
         })
       },
       attributes: [
-        'userId',
         'userId',
         'userName',
         'userContact',
@@ -61,7 +59,7 @@ export const findAllUser = async (req: any, res: Response): Promise<Response> =>
   }
 }
 
-export const findOneUser = async (req: any, res: Response): Promise<Response> => {
+export const findOne = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneUserSchema, req.params)
 
   if (error != null) {
