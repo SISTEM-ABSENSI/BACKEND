@@ -6,7 +6,6 @@ import { userRegistrationSchema } from '../../schemas/user'
 import { ResponseData } from '../../utilities/response'
 import { type UserAttributes, UserModel } from '../../models/user'
 import { hashPassword } from '../../utilities/scure_password'
-import { v4 as uuidv4 } from 'uuid'
 import logger from '../../utilities/logger'
 
 export const userRegister = async (req: any, res: Response): Promise<Response> => {
@@ -18,7 +17,7 @@ export const userRegister = async (req: any, res: Response): Promise<Response> =
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  const { userName, userPassword } = value as UserAttributes
+  const { userName, userPassword, userDeviceId } = value as UserAttributes
 
   try {
     const existingUser = await UserModel.findOne({
@@ -35,11 +34,24 @@ export const userRegister = async (req: any, res: Response): Promise<Response> =
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
     }
 
+    const existingDevice = await UserModel.findOne({
+      raw: true,
+      where: {
+        deleted: { [Op.eq]: 0 },
+        userDeviceId: { [Op.eq]: userDeviceId }
+      }
+    })
+
+    if (existingDevice != null) {
+      const message = `Device is already registered. Please use another one.`
+      logger.info(`Registration attempt failed: ${message}`)
+      return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    }
+
     const hashedPassword = hashPassword(userPassword)
     const newUser = {
       ...value,
-      userPassword: hashedPassword,
-      userId: uuidv4()
+      userPassword: hashedPassword
     }
 
     await UserModel.create(newUser)

@@ -36,11 +36,11 @@ export const userLogin = async (req: Request, res: Response): Promise<Response> 
     const isPasswordValid = hashPassword(userPassword) === user.userPassword
     if (!isPasswordValid) {
       const message = 'Invalid email and password combination!'
-      logger.info(`Login attempt failed: ${message}`)
+      logger.error(`Login attempt failed: ${message}`)
       return res.status(StatusCodes.UNAUTHORIZED).json(ResponseData.error(message))
     }
 
-    const token = generateAccessToken({ userId: user.userId })
+    const token = generateAccessToken({ userId: user.userId, userRole: user.userRole })
     logger.info(`User ${userName} logged in successfully`)
     return res.status(StatusCodes.OK).json(ResponseData.success({ token }))
   } catch (error: any) {

@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
 import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
-import { JadwalModel } from '../../models/jadwal'
 import { updateAttendanceSchema } from '../../schemas/attendanceSchema'
-import { TokoModel } from '../../models/tokoModel'
+import { ScheduleModel } from '../../models/scheduleModel'
+import {
+  AttendanceHistoryAttributes,
+  AttendanceHistoryModel
+} from '../../models/attendanceHistoryModel'
+import moment from 'moment'
 
 export const attendance = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(updateAttendanceSchema, {
@@ -19,35 +24,51 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
   }
 
   try {
-    const result = await JadwalModel.findOne({
-      where: {
-        deleted: 0,
-        jadwalId: value.attendanceId
-      },
-      include: {
-        model: TokoModel,
-        as: 'toko'
+    const scheduleRecord = await ScheduleModel.findOne({
+      where: { deleted: 0, scheduleId: value.attendanceId }
+    })
+
+    if (!scheduleRecord) {
+      const message = 'Attendance record not found'
+      logger.warn(message)
+      return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
+    }
+
+    // Determine the next status based on the current scheduleStatus
+    let newStatus: 'checkin' | 'checkout' | null = null
+    if (scheduleRecord.scheduleStatus === 'waiting') {
+      newStatus = 'checkin'
+    } else if (scheduleRecord.scheduleStatus === 'checkin') {
+      newStatus = 'checkout'
+    }
+
+    if (!newStatus) {
+      const message = 'Invalid status transition'
+      logger.warn(message)
+      return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    }
+
+    // Update jadwal status to the new status
+    await ScheduleModel.update(
+      { ...value, scheduleStatus: newStatus },
+      {
+        where: { deleted: 0, scheduleId: value.attendanceId }
       }
+    )
+
+    const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
+      attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      attendanceHistoryCategory: newStatus,
+      attendanceHistoryUserId: scheduleRecord.scheduleUserId,
+      attendanceHistoryPhoto: value.attendancePhoto
+    }
+
+    await AttendanceHistoryModel.create(attendanceHistoryPayload)
+
+    const response = ResponseData.success({
+      message: `Attendance updated to ${newStatus} successfully`
     })
-
-    console.log(result)
-
-    await JadwalModel.update(value, {
-      where: { deleted: 0, jadwalId: value.attendanceId }
-    })
-
-    // const [updated] = await JadwalModel.update(value, {
-    //   where: { deleted: 0, jadwalId: value.attendanceId }
-    // })
-
-    // if (updated === 0) {
-    //   const message = `Attendance not found with ID: ${value.attendanceId}`
-    //   logger.warn(message)
-    //   return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
-    // }
-
-    const response = ResponseData.success({ message: 'Attendance updated successfully' })
-    logger.info('Attendance updated successfully')
+    logger.info(`Attendance updated to ${newStatus} successfully`)
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`
