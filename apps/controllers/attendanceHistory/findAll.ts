@@ -17,10 +17,6 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  console.log('______________#####__________')
-  console.log(value)
-  console.log('______________#####__________')
-
   try {
     const {
       page: queryPage,
@@ -35,7 +31,9 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
 
     const whereConditions: any = {
       deleted: 0,
-      attendanceHistoryUserId: value.attendanceHistoryUserId
+      ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
+        attendanceHistoryUserId: req.body?.jwtPayload?.userId
+      })
     }
 
     if (startDate && endDate) {

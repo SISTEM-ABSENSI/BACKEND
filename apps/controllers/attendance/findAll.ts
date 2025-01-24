@@ -27,6 +27,9 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
     const result = await ScheduleModel.findAndCountAll({
       where: {
         deleted: 0,
+        ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
+          scheduleUserId: req.body?.jwtPayload?.userId
+        }),
         ...(Boolean(search) && {
           [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
         }),

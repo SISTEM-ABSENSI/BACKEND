@@ -19,14 +19,17 @@ export const updateMyProfile = async (req: any, res: Response): Promise<any> => 
     }
 
     const newData: UserAttributes | any = {
-      ...(requestBody.userName.length > 0 && {
-        userName: requestBody.userName
+      ...(requestBody?.userName?.length > 0 && {
+        userName: requestBody?.userName
       }),
-      ...(requestBody.userPassword.length > 0 && {
-        userPassword: requestBody.userPassword
+      ...(requestBody?.userPassword?.length > 0 && {
+        userPassword: requestBody?.userPassword
       }),
-      ...(requestBody.userRole.length > 0 && {
-        userRole: requestBody.userRole
+      ...(requestBody?.userRole?.length > 0 && {
+        userRole: requestBody?.userRole
+      }),
+      ...(requestBody?.userContact?.length > 0 && {
+        userContact: requestBody?.userContact
       })
     }
 
