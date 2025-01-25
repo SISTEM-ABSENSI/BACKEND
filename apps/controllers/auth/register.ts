@@ -34,19 +34,19 @@ export const userRegister = async (req: any, res: Response): Promise<Response> =
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
     }
 
-    const existingDevice = await UserModel.findOne({
-      raw: true,
-      where: {
-        deleted: { [Op.eq]: 0 },
-        userDeviceId: { [Op.eq]: userDeviceId }
-      }
-    })
+    // const existingDevice = await UserModel.findOne({
+    //   raw: true,
+    //   where: {
+    //     deleted: { [Op.eq]: 0 },
+    //     userDeviceId: { [Op.eq]: userDeviceId }
+    //   }
+    // })
 
-    if (existingDevice != null) {
-      const message = `Device is already registered. Please use another one.`
-      logger.info(`Registration attempt failed: ${message}`)
-      return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
-    }
+    // if (existingDevice != null) {
+    //   const message = `Device is already registered. Please use another one.`
+    //   logger.info(`Registration attempt failed: ${message}`)
+    //   return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    // }
 
     const hashedPassword = hashPassword(userPassword)
     const newUser = {
