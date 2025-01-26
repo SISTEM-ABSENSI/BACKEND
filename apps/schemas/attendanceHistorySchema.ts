@@ -6,9 +6,7 @@ export const attendanceHistorySchema = Joi.object({
   attendanceHistoryUserId: Joi.number().integer().positive().required(),
   attendanceHistoryTime: Joi.string().isoDate().required(),
   attendanceHistoryPhoto: Joi.string().required(),
-  attendanceHistoryCategory: Joi.string()
-    .valid('checkin', 'checkout', 'outside')
-    .required()
+  attendanceHistoryCategory: Joi.string().valid('checkin', 'checkout').required()
 })
 
 export const updateAttendanceHistorySchema = Joi.object({
@@ -29,5 +27,5 @@ export const findAllAttendanceHistoriesSchema = Joi.object({
   pagination: Joi.boolean().optional(),
   startDate: Joi.string().isoDate().optional(),
   endDate: Joi.string().isoDate().optional(),
-  attendanceHistoryUserId: Joi.number().integer().positive().required()
+  attendanceHistoryUserId: Joi.number().integer().positive().optional().allow('')
 })

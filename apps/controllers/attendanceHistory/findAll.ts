@@ -17,10 +17,6 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
-  console.log('______________#####__________')
-  console.log(value)
-  console.log('______________#####__________')
-
   try {
     const {
       page: queryPage,
@@ -28,6 +24,7 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
       pagination,
       startDate,
       endDate,
+      attendanceHistoryUserId,
       search
     } = value
 
@@ -35,7 +32,15 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
 
     const whereConditions: any = {
       deleted: 0,
-      attendanceHistoryUserId: value.attendanceHistoryUserId
+      ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
+        attendanceHistoryUserId: req.body?.jwtPayload?.userId
+      }),
+      ...(Boolean(
+        req.body?.jwtPayload?.userRole === 'admin' ||
+          req.body?.jwtPayload?.userRole === 'superadmin'
+      ) && {
+        attendanceHistoryUserId: attendanceHistoryUserId
+      })
     }
 
     if (startDate && endDate) {
@@ -56,7 +61,8 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
         'attendanceHistoryId',
         'attendanceHistoryUserId',
         'attendanceHistoryTime',
-        'attendanceHistoryCategory'
+        'attendanceHistoryCategory',
+        'attendanceHistoryPhoto'
       ],
       order: [['attendanceHistoryId', 'desc']],
       ...(pagination === 'true' && {

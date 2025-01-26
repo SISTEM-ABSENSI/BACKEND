@@ -4,10 +4,11 @@ import { type ZygoteAttributes, ZygoteModel } from './zygote'
 
 export interface AttendanceHistoryAttributes extends ZygoteAttributes {
   attendanceHistoryId: number
+  attendanceHistoryScheduleId: number
   attendanceHistoryUserId: number
   attendanceHistoryTime: string
   attendanceHistoryPhoto: string
-  attendanceHistoryCategory: 'checkin' | 'checkout' | 'outside'
+  attendanceHistoryCategory: 'checkin' | 'checkout'
 }
 
 type AttendanceHistoryCreationAttributes = Optional<
@@ -28,6 +29,10 @@ export const AttendanceHistoryModel = sequelize.define<AttendanceHistoryInstance
       autoIncrement: true,
       primaryKey: true
     },
+    attendanceHistoryScheduleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     attendanceHistoryUserId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -37,7 +42,7 @@ export const AttendanceHistoryModel = sequelize.define<AttendanceHistoryInstance
       allowNull: false
     },
     attendanceHistoryCategory: {
-      type: DataTypes.ENUM('checkin', 'checkout', 'outside'),
+      type: DataTypes.ENUM('checkin', 'checkout'),
       allowNull: false
     },
     attendanceHistoryPhoto: {
