@@ -24,6 +24,7 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
       pagination,
       startDate,
       endDate,
+      attendanceHistoryUserId,
       search
     } = value
 
@@ -33,6 +34,12 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
       deleted: 0,
       ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
         attendanceHistoryUserId: req.body?.jwtPayload?.userId
+      }),
+      ...(Boolean(
+        req.body?.jwtPayload?.userRole === 'admin' ||
+          req.body?.jwtPayload?.userRole === 'superadmin'
+      ) && {
+        attendanceHistoryUserId: attendanceHistoryUserId
       })
     }
 
@@ -54,7 +61,8 @@ export const findAll = async (req: any, res: Response): Promise<Response> => {
         'attendanceHistoryId',
         'attendanceHistoryUserId',
         'attendanceHistoryTime',
-        'attendanceHistoryCategory'
+        'attendanceHistoryCategory',
+        'attendanceHistoryPhoto'
       ],
       order: [['attendanceHistoryId', 'desc']],
       ...(pagination === 'true' && {

@@ -14,6 +14,10 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
+      attendance_history_schedule_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       attendance_history_user_id: {
         type: Sequelize.INTEGER,
         allowNull: false
@@ -27,7 +31,7 @@ module.exports = {
         allowNull: true
       },
       attendance_history_category: {
-        type: Sequelize.ENUM('checkin', 'checkout', 'outside'),
+        type: Sequelize.ENUM('checkin', 'checkout'),
         allowNull: false
       }
     })

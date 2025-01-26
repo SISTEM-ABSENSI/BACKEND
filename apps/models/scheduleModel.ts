@@ -4,6 +4,7 @@ import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
 import { StoreModel } from './storeModel'
 import { UserModel } from './user'
+import { AttendanceHistoryModel } from './attendanceHistoryModel'
 
 export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleId: number
@@ -79,5 +80,7 @@ StoreModel.hasOne(ScheduleModel, { foreignKey: 'scheduleStoreId', as: 'schedule'
 ScheduleModel.belongsTo(UserModel, { foreignKey: 'scheduleUserId', as: 'user' })
 UserModel.hasOne(ScheduleModel, { foreignKey: 'scheduleUserId', as: 'schedule' })
 
-
-
+ScheduleModel.hasOne(AttendanceHistoryModel, {
+  foreignKey: 'attendanceHistoryScheduleId',
+  as: 'attendanceHistory'
+})

@@ -34,7 +34,6 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    // Determine the next status based on the current scheduleStatus
     let newStatus: 'checkin' | 'checkout' | null = null
     if (scheduleRecord.scheduleStatus === 'waiting') {
       newStatus = 'checkin'
@@ -48,7 +47,6 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
     }
 
-    // Update jadwal status to the new status
     await ScheduleModel.update(
       { ...value, scheduleStatus: newStatus },
       {
@@ -60,7 +58,8 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
       attendanceHistoryCategory: newStatus,
       attendanceHistoryUserId: scheduleRecord.scheduleUserId,
-      attendanceHistoryPhoto: value.attendancePhoto
+      attendanceHistoryPhoto: value.attendancePhoto,
+      attendanceHistoryScheduleId: value.attendanceId
     }
 
     await AttendanceHistoryModel.create(attendanceHistoryPayload)

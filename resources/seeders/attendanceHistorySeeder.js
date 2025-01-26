@@ -7,6 +7,7 @@ module.exports = {
     await queryInterface.bulkInsert('attendance_histories', [
       {
         attendance_history_id: 1,
+        attendance_history_schedule_id: 1,
         attendance_history_user_id: 101,
         attendance_history_time: '2024-12-24 08:00:00',
         attendance_history_category: 'checkin',
@@ -15,6 +16,7 @@ module.exports = {
       },
       {
         attendance_history_id: 2,
+        attendance_history_schedule_id: 2,
         attendance_history_user_id: 102,
         attendance_history_time: '2024-12-24 17:00:00',
         attendance_history_category: 'checkout',
@@ -23,9 +25,10 @@ module.exports = {
       },
       {
         attendance_history_id: 3,
+        attendance_history_schedule_id: 1,
         attendance_history_user_id: 103,
         attendance_history_time: '2024-12-24 12:30:00',
-        attendance_history_category: 'outside',
+        attendance_history_category: 'checkin',
         created_at: new Date(),
         updated_at: new Date()
       }

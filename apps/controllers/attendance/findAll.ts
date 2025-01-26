@@ -7,8 +7,9 @@ import { Pagination } from '../../utilities/pagination'
 import { findAllScheduleSchema } from '../../schemas/scheduleSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
-import { Op } from 'sequelize'
+import { Op, Sequelize } from 'sequelize'
 import { UserModel } from '../../models/user'
+import { AttendanceHistoryModel } from '../../models/attendanceHistoryModel'
 
 export const findAllAttendance = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllScheduleSchema, req.query)
@@ -20,9 +21,25 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
   }
 
   try {
-    const { page: queryPage, size: querySize, pagination, search } = value
+    const {
+      page: queryPage,
+      size: querySize,
+      pagination,
+      search,
+      startDate,
+      endDate
+    } = value
 
     const page = new Pagination(parseInt(queryPage) ?? 0, parseInt(querySize) ?? 10)
+
+    const dateFilter =
+      startDate && endDate
+        ? {
+            createdAt: {
+              [Op.between]: [new Date(startDate), new Date(endDate)]
+            }
+          }
+        : {}
 
     const result = await ScheduleModel.findAndCountAll({
       where: {
@@ -30,10 +47,8 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
         ...(Boolean(req.body?.jwtPayload?.userRole === 'user') && {
           scheduleUserId: req.body?.jwtPayload?.userId
         }),
-        ...(Boolean(search) && {
-          [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
-        }),
-        [Op.or]: [{ scheduleStatus: 'checkin' }, { scheduleStatus: 'checkout' }]
+        [Op.or]: [{ scheduleStatus: 'checkin' }, { scheduleStatus: 'checkout' }],
+        ...dateFilter
       },
       include: [
         {
@@ -50,20 +65,38 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
         {
           model: UserModel,
           as: 'user',
-          attributes: ['userId', 'userName', 'userRole', 'userDeviceId', 'userContact']
+          attributes: ['userId', 'userName', 'userRole', 'userDeviceId', 'userContact'],
+          where: search
+            ? {
+                [Op.or]: [
+                  Sequelize.where(Sequelize.col('user.user_name'), 'LIKE', `%${search}%`)
+                ]
+              }
+            : undefined
+        },
+        {
+          model: AttendanceHistoryModel,
+          as: 'attendanceHistory',
+          attributes: [
+            'attendanceHistoryId',
+            'attendanceHistoryTime',
+            'attendanceHistoryPhoto',
+            'attendanceHistoryCategory'
+          ]
         }
       ],
       order: [['scheduleId', 'desc']],
       ...(pagination === true && {
         limit: page.limit,
         offset: page.offset
-      })
+      }),
+      distinct: true
     })
 
     const response = ResponseData.success(result)
     response.data = page.formatData(result)
 
-    logger.info('Schedule retrieved successfully')
+    logger.info('Attendance records retrieved successfully')
     return res.status(StatusCodes.OK).json(response)
   } catch (error: any) {
     const message = `Unable to process request! Error: ${error.message}`
