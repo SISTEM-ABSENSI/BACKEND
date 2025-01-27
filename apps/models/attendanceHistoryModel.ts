@@ -46,13 +46,13 @@ export const AttendanceHistoryModel = sequelize.define<AttendanceHistoryInstance
       allowNull: false
     },
     attendanceHistoryPhoto: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false
     }
   },
   {
     tableName: 'attendance_histories',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     freezeTableName: true
   }

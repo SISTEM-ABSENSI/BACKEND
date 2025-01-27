@@ -68,7 +68,7 @@ export const ScheduleModel = sequelize.define<ScheduleInstance>(
   },
   {
     tableName: 'schedules',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     freezeTableName: true
   }
