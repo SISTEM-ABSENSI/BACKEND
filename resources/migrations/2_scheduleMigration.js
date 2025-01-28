@@ -45,7 +45,7 @@ module.exports = {
         allowNull: true
       },
       schedule_status: {
-        type: Sequelize.ENUM('waiting', 'checkin', 'checkout'),
+        type: Sequelize.ENUM('waiting', 'checkin', 'checkout', 'outside'),
         allowNull: true,
         defaultValue: 'waiting'
       },

@@ -34,11 +34,28 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    let newStatus: 'checkin' | 'checkout' | null = null
-    if (scheduleRecord.scheduleStatus === 'waiting') {
-      newStatus = 'checkin'
-    } else if (scheduleRecord.scheduleStatus === 'checkin') {
-      newStatus = 'checkout'
+    const currentTime = moment()
+    const startDate = moment(scheduleRecord.scheduleStartDate)
+    const endDate = moment(scheduleRecord.scheduleEndDate)
+
+    // Check if trying to check in before start date
+    if (currentTime.isBefore(startDate)) {
+      const message = 'Cannot check in before scheduled start time'
+      logger.warn(message)
+      return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    }
+
+    let newStatus: 'checkin' | 'checkout' | 'outside' | null = null
+
+    // Check if past end date
+    if (currentTime.isAfter(endDate)) {
+      newStatus = 'outside'
+    } else {
+      if (scheduleRecord.scheduleStatus === 'waiting') {
+        newStatus = 'checkin'
+      } else if (scheduleRecord.scheduleStatus === 'checkin') {
+        newStatus = 'checkout'
+      }
     }
 
     if (!newStatus) {
@@ -55,7 +72,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     )
 
     const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
-      attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      attendanceHistoryTime: currentTime.format('YYYY-MM-DD HH:mm:ss'),
       attendanceHistoryCategory: newStatus,
       attendanceHistoryUserId: scheduleRecord.scheduleUserId,
       attendanceHistoryPhoto: value.attendancePhoto,
