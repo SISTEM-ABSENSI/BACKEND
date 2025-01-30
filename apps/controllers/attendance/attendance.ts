@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+
 import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
@@ -7,7 +8,7 @@ import logger from '../../utilities/logger'
 import { updateAttendanceSchema } from '../../schemas/attendanceSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import {
-  AttendanceHistoryAttributes,
+  type AttendanceHistoryAttributes,
   AttendanceHistoryModel
 } from '../../models/attendanceHistoryModel'
 import moment from 'moment'
@@ -28,7 +29,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       where: { deleted: 0, scheduleId: value.attendanceId }
     })
 
-    if (!scheduleRecord) {
+    if (scheduleRecord == null) {
       const message = 'Attendance record not found'
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
