@@ -49,14 +49,17 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     let newStatus: 'checkin' | 'checkout' | 'outside' | null = null
 
     // Check if past end date
+
+    if (scheduleRecord.scheduleStatus === 'waiting') {
+      newStatus = 'checkin'
+    } else if (scheduleRecord.scheduleStatus === 'checkin') {
+      newStatus = 'checkout'
+    }
+
     if (currentTime.isAfter(endDate)) {
-      newStatus = 'outside'
+      scheduleRecord.scheduleOntime = false
     } else {
-      if (scheduleRecord.scheduleStatus === 'waiting') {
-        newStatus = 'checkin'
-      } else if (scheduleRecord.scheduleStatus === 'checkin') {
-        newStatus = 'checkout'
-      }
+      scheduleRecord.scheduleOntime = true
     }
 
     if (!newStatus) {

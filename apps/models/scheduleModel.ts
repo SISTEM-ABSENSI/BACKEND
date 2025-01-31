@@ -15,6 +15,7 @@ export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleStartDate: string
   scheduleEndDate: string
   scheduleStatus: 'waiting' | 'checkin' | 'checkout' | 'outside'
+  scheduleOntime: boolean
 }
 
 type ScheduleCreationAttributes = Optional<ScheduleAttributes, 'createdAt' | 'updatedAt'>
@@ -64,6 +65,11 @@ export const ScheduleModel = sequelize.define<ScheduleInstance>(
       type: DataTypes.ENUM('waiting', 'checkin', 'checkout', 'outside'),
       allowNull: true,
       defaultValue: 'waiting'
+    },
+    scheduleOntime: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false
     }
   },
   {

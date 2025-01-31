@@ -49,9 +49,10 @@ module.exports = {
         allowNull: true,
         defaultValue: 'waiting'
       },
-      created_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+      schedule_ontime: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
       }
     })
   },
