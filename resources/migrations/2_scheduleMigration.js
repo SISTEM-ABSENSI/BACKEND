@@ -37,11 +37,11 @@ module.exports = {
         allowNull: false
       },
       schedule_start_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true
       },
       schedule_end_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true
       },
       schedule_status: {

@@ -9,11 +9,17 @@ import { createScheduleSchema } from '../../schemas/scheduleSchema'
 export const createSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(createScheduleSchema, req.body)
 
+  console.log('__________value--start--sd')
+  console.log(req.body)
+
   if (error != null) {
     const message = `Invalid request body! ${error.details.map((x) => x.message).join(', ')}`
     logger.warn(message)
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
+
+  console.log('__________value--end--sd')
+  console.log(value)
 
   try {
     value.scheduleUserId = req.body?.jwtPayload?.userId

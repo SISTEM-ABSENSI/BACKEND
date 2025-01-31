@@ -14,6 +14,10 @@ import {
 import moment from 'moment'
 
 export const attendance = async (req: any, res: Response): Promise<Response> => {
+  console.log('___________value______')
+  console.log(req.body)
+  console.log('___________value______')
+
   const { error, value } = validateRequest(updateAttendanceSchema, {
     ...req.body
   })
@@ -29,7 +33,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       where: { deleted: 0, scheduleId: value.attendanceId }
     })
 
-    if (scheduleRecord == null) {
+    if (scheduleRecord === null) {
       const message = 'Attendance record not found'
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
@@ -68,6 +72,8 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
     }
 
+    console.log(newStatus)
+
     await ScheduleModel.update(
       { ...value, scheduleStatus: newStatus },
       {
@@ -76,7 +82,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     )
 
     const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
-      attendanceHistoryTime: currentTime.format('YYYY-MM-DD HH:mm:ss'),
+      attendanceHistoryTime: value.attendanceTime,
       attendanceHistoryCategory: newStatus,
       attendanceHistoryUserId: scheduleRecord.scheduleUserId,
       attendanceHistoryPhoto: value.attendancePhoto,

@@ -6,10 +6,9 @@ export const createScheduleSchema = Joi.object({
   scheduleName: Joi.string().max(100).required(), // Validasi nama schedule
   scheduleDescription: Joi.string().required(), // Validasi deskripsi schedule
   scheduleStoreId: Joi.number().integer().positive().required(), // Foreign key ke Store
-  scheduleStartDate: Joi.date().optional(), // Tanggal mulai opsional
-  scheduleEndDate: Joi.date().optional(), // Tanggal selesai opsional
-  scheduleStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional(), // Status dengan pilihan tertentu
-  createdAt: Joi.date().optional()
+  scheduleStartDate: Joi.string().required(), // Tanggal mulai opsional
+  scheduleEndDate: Joi.string().required(), // Tanggal selesai opsional
+  scheduleStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional() // Status dengan pilihan tertentu
 })
 
 export const updateScheduleSchema = Joi.object({
@@ -18,8 +17,8 @@ export const updateScheduleSchema = Joi.object({
   scheduleName: Joi.string().allow('').max(100).optional(),
   scheduleDescription: Joi.string().allow('').optional(),
   scheduleStoreId: Joi.number().allow('').integer().positive().optional(),
-  scheduleStartDate: Joi.date().allow('').optional(),
-  scheduleEndDate: Joi.date().allow('').optional(),
+  scheduleStartDate: Joi.string().required(),
+  scheduleEndDate: Joi.string().required(),
   scheduleStatus: Joi.string()
     .allow('')
     .valid('waiting', 'checkin', 'checkout')
