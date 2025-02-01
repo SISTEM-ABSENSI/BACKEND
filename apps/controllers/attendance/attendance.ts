@@ -39,16 +39,16 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    const currentTime = moment()
+    const currentTime = moment().utcOffset('+07:00')
     const startDate = moment(scheduleRecord.scheduleStartDate)
     const endDate = moment(scheduleRecord.scheduleEndDate)
 
-    // Check if trying to check in before start date
-    if (currentTime.isBefore(startDate)) {
-      const message = 'Cannot check in before scheduled start time'
-      logger.warn(message)
-      return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
-    }
+    // // Check if trying to check in before start date
+    // if (currentTime.isBefore(startDate)) {
+    //   const message = 'Cannot check in before scheduled start time'
+    //   logger.warn(message)
+    //   return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    // }
 
     let newStatus: 'checkin' | 'checkout' | 'outside' | null = null
 

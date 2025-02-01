@@ -69,7 +69,7 @@ export const ScheduleModel = sequelize.define<ScheduleInstance>(
     scheduleOntime: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: false
+      defaultValue: true
     }
   },
   {

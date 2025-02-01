@@ -52,7 +52,7 @@ module.exports = {
       schedule_ontime: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue: false
+        defaultValue: true
       }
     })
   },
