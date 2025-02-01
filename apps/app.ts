@@ -1,3 +1,4 @@
+process.env.TZ = 'Asia/Jakarta'
 import express, { Express } from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
