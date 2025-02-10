@@ -43,22 +43,6 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     const startDate = moment(scheduleRecord.scheduleStartDate)
     const endDate = moment(scheduleRecord.scheduleEndDate)
 
-    logger.info('-------------current time with +07 utc----------------')
-    logger.info(currentTime)
-    logger.info('-----------------end-------------')
-
-    const timeWithPureMoment = moment()
-    logger.info('-------------current time with pure moment----------------')
-    logger.info(timeWithPureMoment)
-    logger.info('-----------------end-------------')
-
-    logger.info('-------------start date----------------')
-    logger.info(startDate)
-    logger.info('-----------------end-------------')
-
-    logger.info('-------------end date----------------')
-    logger.info(endDate)
-    logger.info('-----------------end-------------')
     // // Check if trying to check in before start date
     // if (currentTime.isBefore(startDate)) {
     //   const message = 'Cannot check in before scheduled start time'

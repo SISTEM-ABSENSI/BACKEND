@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
