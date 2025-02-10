@@ -1,19 +1,21 @@
 import Joi from 'joi'
 import { jwtPayloadSchema } from './jwtPayloadSchema'
+import { createTodoListSchema } from './todoListSchema'
 
 export const createScheduleSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
-  scheduleName: Joi.string().max(100).required(), // Validasi nama schedule
-  scheduleDescription: Joi.string().required(), // Validasi deskripsi schedule
-  scheduleStoreId: Joi.number().integer().positive().required(), // Foreign key ke Store
-  scheduleStartDate: Joi.string().required(), // Tanggal mulai opsional
-  scheduleEndDate: Joi.string().required(), // Tanggal selesai opsional
-  scheduleStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional() // Status dengan pilihan tertentu
+  scheduleName: Joi.string().max(100).required(),
+  scheduleDescription: Joi.string().required(),
+  scheduleStoreId: Joi.number().integer().positive().required(),
+  scheduleStartDate: Joi.string().required(),
+  scheduleEndDate: Joi.string().required(),
+  scheduleStatus: Joi.string().valid('waiting', 'checkin', 'checkout').optional(),
+  todoLists: Joi.array().items(createTodoListSchema).required()
 })
 
 export const updateScheduleSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
-  scheduleId: Joi.number().integer().positive().required(), // ID wajib untuk update
+  scheduleId: Joi.number().integer().positive().required(),
   scheduleName: Joi.string().allow('').max(100).optional(),
   scheduleDescription: Joi.string().allow('').optional(),
   scheduleStoreId: Joi.number().allow('').integer().positive().optional(),
@@ -22,12 +24,13 @@ export const updateScheduleSchema = Joi.object({
   scheduleStatus: Joi.string()
     .allow('')
     .valid('waiting', 'checkin', 'checkout')
-    .optional()
+    .optional(),
+  todoLists: Joi.array().items(createTodoListSchema).optional()
 })
 
 export const deleteScheduleSchema = Joi.object({
   jwtPayload: jwtPayloadSchema,
-  scheduleId: Joi.number().integer().positive().required() // Wajib untuk menghapus
+  scheduleId: Joi.number().integer().positive().required()
 })
 
 export const findOneScheduleSchema = Joi.object({

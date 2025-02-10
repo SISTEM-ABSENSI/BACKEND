@@ -17,7 +17,7 @@ export interface TodoListInstance
     TodoListAttributes {}
 
 export const TodoListModel = sequelize.define<TodoListInstance>(
-  'TodoList',
+  'TodoLists',
   {
     ...ZygoteModel,
     todoListId: {
@@ -40,7 +40,7 @@ export const TodoListModel = sequelize.define<TodoListInstance>(
     }
   },
   {
-    tableName: 'todo_list',
+    tableName: 'todo_lists',
     timestamps: true,
     underscored: true,
     freezeTableName: true

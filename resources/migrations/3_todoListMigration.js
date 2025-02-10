@@ -7,7 +7,7 @@ const { ZygoteModel } = require('../zygote')
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('todo_list', {
+    await queryInterface.createTable('todo_lists', {
       ...ZygoteModel,
       todo_list_id: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -37,6 +37,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('todo_list')
+    await queryInterface.dropTable('todo_lists')
   }
 }

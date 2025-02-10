@@ -2,7 +2,7 @@ import Joi from 'joi'
 
 export const createTodoListSchema = Joi.object({
   todoListName: Joi.string().max(100).required(),
-  todoListScheduleId: Joi.number().integer().positive().required(),
+  todoListScheduleId: Joi.number().integer().positive().optional().allow(''),
   todoListStatus: Joi.boolean().optional()
 })
 
