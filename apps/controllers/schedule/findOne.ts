@@ -6,6 +6,7 @@ import logger from '../../utilities/logger'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
 import { findOneScheduleSchema } from '../../schemas/scheduleSchema'
+import { TodoListModel } from '../../models/todoListModel'
 
 export const findOneSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneScheduleSchema, req.params)
@@ -22,10 +23,16 @@ export const findOneSchedule = async (req: any, res: Response): Promise<Response
         deleted: 0,
         scheduleId: value.scheduleId
       },
-      include: {
-        model: StoreModel,
-        as: 'store'
-      }
+      include: [
+        {
+          model: StoreModel,
+          as: 'store'
+        },
+        {
+          model: TodoListModel,
+          as: 'todoList'
+        }
+      ]
     })
 
     if (result == null) {

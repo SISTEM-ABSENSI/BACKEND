@@ -18,6 +18,7 @@ export const createSchedule = async (req: any, res: Response): Promise<Response>
   }
 
   const transaction = await sequelize.transaction()
+
   try {
     value.scheduleUserId = req.body?.jwtPayload?.userId
     const schedule = await ScheduleModel.create(value, { transaction })
@@ -27,10 +28,10 @@ export const createSchedule = async (req: any, res: Response): Promise<Response>
       todoListScheduleId: schedule.scheduleId
     }))
 
-    const createdTodoLists = await TodoListModel.bulkCreate(todoLists, { transaction })
+    await TodoListModel.bulkCreate(todoLists, { transaction })
 
     await transaction.commit()
-    const response = ResponseData.success({ schedule, todoLists: createdTodoLists })
+    const response = ResponseData.success()
     logger.info('Schedule and todo lists created successfully')
     return res.status(StatusCodes.CREATED).json(response)
   } catch (error: any) {

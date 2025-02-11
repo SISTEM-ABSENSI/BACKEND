@@ -16,8 +16,8 @@ export const createStore = async (req: any, res: Response): Promise<Response> =>
   }
 
   try {
-    const product = await StoreModel.create(value)
-    const response = ResponseData.success(product)
+    await StoreModel.create(value)
+    const response = ResponseData.success()
     logger.info('Store created successfully')
     return res.status(StatusCodes.CREATED).json(response)
   } catch (error: any) {

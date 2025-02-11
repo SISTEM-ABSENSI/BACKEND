@@ -8,6 +8,7 @@ import { findAllScheduleSchema } from '../../schemas/scheduleSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
 import { Op, fn, col } from 'sequelize'
+import { TodoListModel } from '../../models/todoListModel'
 
 export const findAllSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllScheduleSchema, req.query)
@@ -41,20 +42,23 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
         ...(Boolean(search) && {
           [Op.or]: [{ scheduleName: { [Op.like]: `%${search}%` } }]
         }),
-        ...(Boolean(scheduleStatus) &&
-          scheduleStatus !== 'all' && {
-            scheduleStatus: scheduleStatus
-          }),
+        ...(Boolean(scheduleStatus) && scheduleStatus !== 'all' && { scheduleStatus }),
         ...(Boolean(scheduleStatusNot) && {
           scheduleStatus: {
             [Op.not]: scheduleStatusNot
           }
         })
       },
-      include: {
-        model: StoreModel,
-        as: 'store'
-      },
+      include: [
+        {
+          model: StoreModel,
+          as: 'store'
+        },
+        {
+          model: TodoListModel,
+          as: 'todoList'
+        }
+      ],
       order: [
         [fn('FIELD', col('scheduleStatus'), 'waiting', 'checkin', 'checkout'), 'ASC'],
         ['scheduleId', 'desc']

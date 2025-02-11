@@ -5,6 +5,7 @@ import { type ZygoteAttributes, ZygoteModel } from './zygote'
 import { StoreModel } from './storeModel'
 import { UserModel } from './user'
 import { AttendanceHistoryModel } from './attendanceHistoryModel'
+import { TodoListModel } from './todoListModel'
 
 export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleId: number
@@ -89,4 +90,9 @@ UserModel.hasOne(ScheduleModel, { foreignKey: 'scheduleUserId', as: 'schedule' }
 ScheduleModel.hasOne(AttendanceHistoryModel, {
   foreignKey: 'attendanceHistoryScheduleId',
   as: 'attendanceHistory'
+})
+
+ScheduleModel.hasMany(TodoListModel, {
+  foreignKey: 'todoListScheduleId',
+  as: 'todoList'
 })

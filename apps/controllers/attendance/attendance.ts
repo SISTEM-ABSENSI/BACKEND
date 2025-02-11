@@ -14,10 +14,6 @@ import {
 import moment from 'moment'
 
 export const attendance = async (req: any, res: Response): Promise<Response> => {
-  console.log('___________value______')
-  console.log(req.body)
-  console.log('___________value______')
-
   const { error, value } = validateRequest(updateAttendanceSchema, {
     ...req.body
   })
@@ -40,7 +36,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     }
 
     const currentTime = moment().utcOffset('+07:00')
-    const startDate = moment(scheduleRecord.scheduleStartDate)
+    // const startDate = moment(scheduleRecord.scheduleStartDate)
     const endDate = moment(scheduleRecord.scheduleEndDate)
 
     // // Check if trying to check in before start date
