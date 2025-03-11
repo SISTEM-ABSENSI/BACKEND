@@ -27,11 +27,11 @@ export const findOneSchedule = async (req: any, res: Response): Promise<Response
         {
           model: StoreModel,
           as: 'store'
-        },
-        {
-          model: TodoListModel,
-          as: 'todoList'
         }
+        // {
+        //   model: TodoListModel,
+        //   as: 'todoList'
+        // }
       ]
     })
 

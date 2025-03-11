@@ -68,8 +68,6 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
     }
 
-    console.log(newStatus)
-
     await ScheduleModel.update(
       { ...value, scheduleStatus: newStatus },
       {

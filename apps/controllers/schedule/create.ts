@@ -23,12 +23,12 @@ export const createSchedule = async (req: any, res: Response): Promise<Response>
     value.scheduleUserId = req.body?.jwtPayload?.userId
     const schedule = await ScheduleModel.create(value, { transaction })
 
-    const todoLists = req.body.todoLists.map((todo: any) => ({
-      ...todo,
-      todoListScheduleId: schedule.scheduleId
-    }))
+    // const todoLists = req.body.todoLists.map((todo: any) => ({
+    //   ...todo,
+    //   todoListScheduleId: schedule.scheduleId
+    // }))
 
-    await TodoListModel.bulkCreate(todoLists, { transaction })
+    // await TodoListModel.bulkCreate(todoLists, { transaction })
 
     await transaction.commit()
     const response = ResponseData.success()

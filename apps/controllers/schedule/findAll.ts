@@ -8,7 +8,7 @@ import { findAllScheduleSchema } from '../../schemas/scheduleSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
 import { Op, fn, col } from 'sequelize'
-import { TodoListModel } from '../../models/todoListModel'
+// import { TodoListModel } from '../../models/todoListModel'
 
 export const findAllSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllScheduleSchema, req.query)
@@ -53,11 +53,11 @@ export const findAllSchedule = async (req: any, res: Response): Promise<Response
         {
           model: StoreModel,
           as: 'store'
-        },
-        {
-          model: TodoListModel,
-          as: 'todoList'
         }
+        // {
+        //   model: TodoListModel,
+        //   as: 'todoList'
+        // }
       ],
       order: [
         [fn('FIELD', col('scheduleStatus'), 'waiting', 'checkin', 'checkout'), 'ASC'],
