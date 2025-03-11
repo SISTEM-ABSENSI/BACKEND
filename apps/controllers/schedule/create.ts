@@ -5,6 +5,8 @@ import { ResponseData } from '../../utilities/response'
 import logger from '../../utilities/logger'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { createScheduleSchema } from '../../schemas/scheduleSchema'
+import { sequelize } from '../../models/index'
+import { TodoListModel } from '../../models/todoListModel'
 
 export const createSchedule = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(createScheduleSchema, req.body)
@@ -15,13 +17,25 @@ export const createSchedule = async (req: any, res: Response): Promise<Response>
     return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
   }
 
+  const transaction = await sequelize.transaction()
+
   try {
     value.scheduleUserId = req.body?.jwtPayload?.userId
-    const schedule = await ScheduleModel.create(value)
-    const response = ResponseData.success(schedule)
-    logger.info('schedule created successfully')
+    const schedule = await ScheduleModel.create(value, { transaction })
+
+    // const todoLists = req.body.todoLists.map((todo: any) => ({
+    //   ...todo,
+    //   todoListScheduleId: schedule.scheduleId
+    // }))
+
+    // await TodoListModel.bulkCreate(todoLists, { transaction })
+
+    await transaction.commit()
+    const response = ResponseData.success()
+    logger.info('Schedule and todo lists created successfully')
     return res.status(StatusCodes.CREATED).json(response)
   } catch (error: any) {
+    await transaction.rollback()
     const message = `Unable to process request! Error: ${error.message}`
     logger.error(message, { stack: error.stack })
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ResponseData.error(message))

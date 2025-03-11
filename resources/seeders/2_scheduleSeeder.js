@@ -14,6 +14,7 @@ module.exports = {
         schedule_start_date: new Date(),
         schedule_end_date: new Date(),
         schedule_status: 'waiting',
+        schedule_ontime: false,
         created_at: new Date()
       },
       {
@@ -25,6 +26,7 @@ module.exports = {
         schedule_start_date: new Date(),
         schedule_end_date: new Date(),
         schedule_status: 'waiting',
+        schedule_ontime: false,
         created_at: new Date()
       }
     ])

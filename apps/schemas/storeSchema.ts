@@ -16,7 +16,7 @@ export const updateStoreSchema = Joi.object({
   storeName: Joi.string().allow('').max(100).optional(),
   storeAddress: Joi.string().allow('').required(),
   storeLongitude: Joi.string().allow('').max(100).optional(),
-  storeLatitude: Joi.string().allow('').max(100).optional(),
+  storeLatitude: Joi.string().allow('').max(100).optional()
 })
 
 export const deleteStoreSchema = Joi.object({

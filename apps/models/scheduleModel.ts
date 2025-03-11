@@ -5,6 +5,7 @@ import { type ZygoteAttributes, ZygoteModel } from './zygote'
 import { StoreModel } from './storeModel'
 import { UserModel } from './user'
 import { AttendanceHistoryModel } from './attendanceHistoryModel'
+import { TodoListModel } from './todoListModel'
 
 export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleId: number
@@ -14,7 +15,8 @@ export interface ScheduleAttributes extends ZygoteAttributes {
   scheduleUserId: number
   scheduleStartDate: string
   scheduleEndDate: string
-  scheduleStatus: 'waiting' | 'checkin' | 'checkout'
+  scheduleStatus: 'waiting' | 'checkin' | 'checkout' | 'outside'
+  scheduleOntime: boolean
 }
 
 type ScheduleCreationAttributes = Optional<ScheduleAttributes, 'createdAt' | 'updatedAt'>
@@ -61,9 +63,14 @@ export const ScheduleModel = sequelize.define<ScheduleInstance>(
       allowNull: true
     },
     scheduleStatus: {
-      type: DataTypes.ENUM('waiting', 'checkin', 'checkout'),
+      type: DataTypes.ENUM('waiting', 'checkin', 'checkout', 'outside'),
       allowNull: true,
       defaultValue: 'waiting'
+    },
+    scheduleOntime: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true
     }
   },
   {
@@ -83,4 +90,9 @@ UserModel.hasOne(ScheduleModel, { foreignKey: 'scheduleUserId', as: 'schedule' }
 ScheduleModel.hasOne(AttendanceHistoryModel, {
   foreignKey: 'attendanceHistoryScheduleId',
   as: 'attendanceHistory'
+})
+
+ScheduleModel.hasMany(TodoListModel, {
+  foreignKey: 'todoListScheduleId',
+  as: 'todoList'
 })

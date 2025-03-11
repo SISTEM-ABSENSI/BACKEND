@@ -45,13 +45,14 @@ module.exports = {
         allowNull: true
       },
       schedule_status: {
-        type: Sequelize.ENUM('waiting', 'checkin', 'checkout'),
+        type: Sequelize.ENUM('waiting', 'checkin', 'checkout', 'outside'),
         allowNull: true,
         defaultValue: 'waiting'
       },
-      created_at: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+      schedule_ontime: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
       }
     })
   },

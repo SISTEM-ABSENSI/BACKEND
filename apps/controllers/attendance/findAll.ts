@@ -9,7 +9,6 @@ import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
 import { Op, Sequelize } from 'sequelize'
 import { UserModel } from '../../models/user'
-import { AttendanceHistoryModel } from '../../models/attendanceHistoryModel'
 
 export const findAllAttendance = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findAllScheduleSchema, req.query)
@@ -73,16 +72,6 @@ export const findAllAttendance = async (req: any, res: Response): Promise<Respon
                 ]
               }
             : undefined
-        },
-        {
-          model: AttendanceHistoryModel,
-          as: 'attendanceHistory',
-          attributes: [
-            'attendanceHistoryId',
-            'attendanceHistoryTime',
-            'attendanceHistoryPhoto',
-            'attendanceHistoryCategory'
-          ]
         }
       ],
       order: [['scheduleId', 'desc']],

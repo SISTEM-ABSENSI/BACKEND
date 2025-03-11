@@ -27,5 +27,6 @@ export const findAllAttendanceHistoriesSchema = Joi.object({
   pagination: Joi.boolean().optional(),
   startDate: Joi.string().isoDate().optional(),
   endDate: Joi.string().isoDate().optional(),
-  attendanceHistoryUserId: Joi.number().integer().positive().optional().allow('')
+  attendanceHistoryUserId: Joi.number().integer().positive().optional().allow(''),
+  attendanceHistoryScheduleId: Joi.number().integer().positive().optional().allow('')
 })
