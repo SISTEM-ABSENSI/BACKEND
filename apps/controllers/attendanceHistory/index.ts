@@ -1,5 +1,7 @@
 import { findAll } from './findAll'
+import { findDetail } from './findDetail'
 
 export const attendanceHistoryController = {
-  findAll
+  findAll,
+  findDetail
 }

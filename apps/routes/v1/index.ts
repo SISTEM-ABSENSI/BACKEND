@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { type Express, type Request, type Response } from 'express'
 import { index } from '../../controllers'
 import userRoutes from './userRouter'

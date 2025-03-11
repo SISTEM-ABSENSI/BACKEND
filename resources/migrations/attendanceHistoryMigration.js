@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false
       },
       attendance_history_photo: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true
       },
       attendance_history_category: {

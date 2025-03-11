@@ -6,9 +6,10 @@ import logger from '../../utilities/logger'
 import { ScheduleModel } from '../../models/scheduleModel'
 import { StoreModel } from '../../models/storeModel'
 import { findOneScheduleSchema } from '../../schemas/scheduleSchema'
-import { TodoListModel } from '../../models/todoListModel'
+import { AttendanceHistoryModel } from '../../models/attendanceHistoryModel'
+import { UserModel } from '../../models/user'
 
-export const findOneSchedule = async (req: any, res: Response): Promise<Response> => {
+export const findOneAttendance = async (req: any, res: Response): Promise<Response> => {
   const { error, value } = validateRequest(findOneScheduleSchema, req.params)
 
   if (error != null) {
@@ -26,12 +27,30 @@ export const findOneSchedule = async (req: any, res: Response): Promise<Response
       include: [
         {
           model: StoreModel,
-          as: 'store'
+          as: 'store',
+          attributes: [
+            'storeId',
+            'storeName',
+            'storeAddress',
+            'storeLongitude',
+            'storeLatitude'
+          ]
+        },
+        {
+          model: UserModel,
+          as: 'user',
+          attributes: ['userId', 'userName', 'userRole', 'userDeviceId', 'userContact']
+        },
+        {
+          model: AttendanceHistoryModel,
+          as: 'attendanceHistory',
+          attributes: [
+            'attendanceHistoryId',
+            'attendanceHistoryTime',
+            'attendanceHistoryPhoto',
+            'attendanceHistoryCategory'
+          ]
         }
-        // {
-        //   model: TodoListModel,
-        //   as: 'todoList'
-        // }
       ]
     })
 

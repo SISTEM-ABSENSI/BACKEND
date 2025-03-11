@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { DataTypes, type Model, type Optional } from 'sequelize'
 import { sequelize } from './index'
 import { type ZygoteAttributes, ZygoteModel } from './zygote'
@@ -46,13 +47,13 @@ export const AttendanceHistoryModel = sequelize.define<AttendanceHistoryInstance
       allowNull: false
     },
     attendanceHistoryPhoto: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false
     }
   },
   {
     tableName: 'attendance_histories',
-    timestamps: false,
+    timestamps: true,
     underscored: true,
     freezeTableName: true
   }

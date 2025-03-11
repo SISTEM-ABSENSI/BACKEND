@@ -6,6 +6,7 @@ import { middleware } from '../../middlewares'
 const router = Router()
 
 router.get('/', attendanceController.findAllAttendance)
+router.get('/detail/:scheduleId', attendanceController.findOneAttendance)
 router.patch('/', middleware.useAuthorization, attendanceController.attendance)
 
 export default router

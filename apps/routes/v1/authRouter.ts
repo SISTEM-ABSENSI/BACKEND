@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router, type Request, type Response } from 'express'
 import { authController } from '../../controllers/auth'
 

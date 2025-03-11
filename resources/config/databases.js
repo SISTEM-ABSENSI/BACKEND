@@ -4,7 +4,10 @@ module.exports = {
     password: 'toor',
     database: 'sistemabsensi',
     host: '127.0.0.1',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    dialectOptions: {
+      dateStrings: true
+    }
   },
   test: {
     username: 'root',

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+
 import { type Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { validateRequest } from '../../utilities/validateRequest'
@@ -7,7 +8,7 @@ import logger from '../../utilities/logger'
 import { updateAttendanceSchema } from '../../schemas/attendanceSchema'
 import { ScheduleModel } from '../../models/scheduleModel'
 import {
-  AttendanceHistoryAttributes,
+  type AttendanceHistoryAttributes,
   AttendanceHistoryModel
 } from '../../models/attendanceHistoryModel'
 import moment from 'moment'
@@ -28,17 +29,37 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
       where: { deleted: 0, scheduleId: value.attendanceId }
     })
 
-    if (!scheduleRecord) {
+    if (scheduleRecord === null) {
       const message = 'Attendance record not found'
       logger.warn(message)
       return res.status(StatusCodes.NOT_FOUND).json(ResponseData.error(message))
     }
 
-    let newStatus: 'checkin' | 'checkout' | null = null
+    const currentTime = moment().utcOffset('+07:00')
+    // const startDate = moment(scheduleRecord.scheduleStartDate)
+    const endDate = moment(scheduleRecord.scheduleEndDate)
+
+    // // Check if trying to check in before start date
+    // if (currentTime.isBefore(startDate)) {
+    //   const message = 'Cannot check in before scheduled start time'
+    //   logger.warn(message)
+    //   return res.status(StatusCodes.BAD_REQUEST).json(ResponseData.error(message))
+    // }
+
+    let newStatus: 'checkin' | 'checkout' | 'outside' | null = null
+
+    // Check if past end date
+
     if (scheduleRecord.scheduleStatus === 'waiting') {
       newStatus = 'checkin'
     } else if (scheduleRecord.scheduleStatus === 'checkin') {
       newStatus = 'checkout'
+    }
+
+    if (currentTime.isAfter(endDate)) {
+      scheduleRecord.scheduleOntime = false
+    } else {
+      scheduleRecord.scheduleOntime = true
     }
 
     if (!newStatus) {
@@ -55,7 +76,7 @@ export const attendance = async (req: any, res: Response): Promise<Response> => 
     )
 
     const attendanceHistoryPayload: AttendanceHistoryAttributes | any = {
-      attendanceHistoryTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+      attendanceHistoryTime: value.attendanceTime,
       attendanceHistoryCategory: newStatus,
       attendanceHistoryUserId: scheduleRecord.scheduleUserId,
       attendanceHistoryPhoto: value.attendancePhoto,
